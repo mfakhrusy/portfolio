@@ -37,8 +37,8 @@ const App = () => {
     // setLampPhase("placing");
     // await new Promise((r) => setTimeout(r, 600));
 
-    setLampPhase('brightening');
-    await new Promise(r => setTimeout(r, 0));
+    setLampPhase("brightening");
+    await new Promise((r) => setTimeout(r, 0));
 
     setLampPhase("placed");
   };
@@ -101,7 +101,11 @@ const App = () => {
       >
         <div
           class="room"
-          classList={{ brightened: scene() === 'office' && (lampPhase() === 'brightening' || lampPhase() === 'placed' ) }}
+          classList={{
+            brightened:
+              scene() === "office" &&
+              (lampPhase() === "brightening" || lampPhase() === "placed"),
+          }}
           // classList={{ brightened: scene() === "office" }}
         >
           {/* <button
