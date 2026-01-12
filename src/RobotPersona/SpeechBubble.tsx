@@ -1,4 +1,5 @@
 import { createSignal, onMount, Show } from "solid-js";
+import "./SpeechBubble.css";
 
 const sentences = [
   "Hello, this is Fahru.",
@@ -71,31 +72,15 @@ export function SpeechBubble() {
   return (
     <Show when={isVisible()}>
       <svg
+        class="speech-bubble-svg"
         width={`${bubbleWidth + 20}px`}
         height={`${bubbleHeight() + 20}px`}
         viewBox={`0 0 ${bubbleWidth + 20} ${bubbleHeight() + 20}`}
         xmlns="http://www.w3.org/2000/svg"
-        style={{
-          position: "absolute",
-          bottom: "65%",
-          left: "112px",
-          overflow: "visible",
-        }}
       >
-        <style>
-          {`
-            @keyframes fadeIn {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
-            .speech-bubble {
-              animation: fadeIn 0.3s ease-out forwards;
-            }
-          `}
-        </style>
-
         <g class="speech-bubble">
           <polygon
+            class="speech-bubble-shape"
             points={`
               15,0
               ${bubbleWidth - 15},0
@@ -109,14 +94,10 @@ export function SpeechBubble() {
               0,${bubbleHeight() - 15}
               0,15
             `}
-            style={{
-              fill: "#ffffff",
-              stroke: "#000",
-              "stroke-width": "1px",
-            }}
           />
 
           <text
+            class="speech-bubble-text"
             x={20}
             y={(() => {
               const fontSize = 20;
@@ -124,13 +105,6 @@ export function SpeechBubble() {
               const totalTextHeight = fontSize + (lineCount() - 1) * lineHeight;
               return (bubbleHeight() - totalTextHeight) / 2 + fontSize;
             })()}
-            style={{
-              "font-family": "Arial, sans-serif",
-              "font-size": "20px",
-              fill: "#000",
-              "user-select": "none",
-              "pointer-events": "none",
-            }}
           >
             {lines().map((line, i) => (
               <tspan x={20} dy={i === 0 ? 0 : 28}>

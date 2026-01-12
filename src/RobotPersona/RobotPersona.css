@@ -1,0 +1,80 @@
+.robot-persona {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.robot-persona-svg {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 1.5;
+}
+
+.robot-body-outer {
+  fill: #c3c3c3;
+}
+
+.robot-body-inner {
+  fill: #ebebeb;
+}
+
+.robot-eye {
+  font-family: Arial, sans-serif;
+  font-size: 382.409px;
+  user-select: none;
+  pointer-events: none;
+}
+
+@keyframes talk {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(2.5);
+  }
+}
+
+.robot-mouth {
+  fill: #606060;
+  stroke: #000;
+  stroke-width: 2.5px;
+  animation: talk 0.3s ease-in-out infinite;
+  animation-delay: 5s;
+  transform-origin: 825px 415px;
+}
+
+@keyframes wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-15deg);
+  }
+  75% {
+    transform: rotate(15deg);
+  }
+}
+
+.robot-right-hand-group {
+  transform-origin: 180px 550px;
+}
+
+.robot-right-hand {
+  fill: #e7e7e7;
+  stroke: #000;
+  stroke-width: 2.5px;
+  transform-origin: 180px 550px;
+  animation: wave 0.5s ease-in-out infinite;
+  animation-delay: 5s;
+}
+
+.robot-left-hand {
+  fill: #e7e7e7;
+  stroke: #000;
+  stroke-width: 2.5px;
+}
