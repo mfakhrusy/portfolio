@@ -1,4 +1,22 @@
+import { SpeechBubble } from "./SpeechBubble";
+
 export function RobotPersona() {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      }}
+    >
+      <RobotPersonaSvg />
+      <SpeechBubble />
+    </div>
+  );
+}
+
+function RobotPersonaSvg() {
   return (
     <svg
       width="200px"
@@ -15,10 +33,6 @@ export function RobotPersona() {
         "stroke-linecap": "round",
         "stroke-linejoin": "round",
         "stroke-miterlimit": 1.5,
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
       }}
     >
       <rect
@@ -83,17 +97,33 @@ function RobotPersonaLeftEye() {
 
 function RobotPersonaMouth() {
   return (
-    <rect
-      x={698.198}
-      y={400.496}
-      width={253.49}
-      height={29.42}
-      style={{
-        fill: "#606060",
-        stroke: "#000",
-        "stroke-width": "2.5px",
-      }}
-    />
+    <g>
+      <style>
+        {`
+          @keyframes talk {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(2.5); }
+          }
+          .talking-mouth {
+            animation: talk 0.3s ease-in-out infinite;
+            animation-delay: 5s;
+            transform-origin: 825px 415px;
+          }
+        `}
+      </style>
+      <rect
+        class="talking-mouth"
+        x={698.198}
+        y={400.496}
+        width={253.49}
+        height={29.42}
+        style={{
+          fill: "#606060",
+          stroke: "#000",
+          "stroke-width": "2.5px",
+        }}
+      />
+    </g>
   );
 }
 

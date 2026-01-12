@@ -2,7 +2,7 @@ import { createSignal, createEffect, Show } from "solid-js";
 import "./App.css";
 import type { LampPhase } from "./type";
 import { Lamp } from "./Lamp";
-import { RobotPersona } from "./RobotPersona";
+import { RobotPersona } from "./RobotPersona/RobotPersona";
 
 type ContentItem = {
   title: string;
