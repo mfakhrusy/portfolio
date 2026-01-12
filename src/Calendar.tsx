@@ -3,14 +3,25 @@ import "./Calendar.css";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 export function Calendar() {
   const [isZoomed, setIsZoomed] = createSignal(false);
+  const [showExpanded, setShowExpanded] = createSignal(false);
+
   const today = new Date();
-  
   const currentDay = today.getDate();
   const currentMonth = today.getMonth();
   const currentYear = today.getFullYear();
@@ -42,11 +53,18 @@ export function Calendar() {
 
   const handleClick = (e: Event) => {
     e.stopPropagation();
-    setIsZoomed(!isZoomed());
+    if (!isZoomed()) {
+      setIsZoomed(true);
+      setTimeout(() => setShowExpanded(true), 300);
+    } else {
+      setShowExpanded(false);
+      setTimeout(() => setIsZoomed(false), 300);
+    }
   };
 
   const handleBackdropClick = () => {
-    setIsZoomed(false);
+    setShowExpanded(false);
+    setTimeout(() => setIsZoomed(false), 300);
   };
 
   return (
@@ -61,42 +79,46 @@ export function Calendar() {
         onClick={handleClick}
       >
         {/* Compact view */}
-        <Show when={!isZoomed()}>
-          <div class="calendar-compact">
-            <div class="calendar-month">{shortMonth}</div>
-            <div class="calendar-day">{currentDay}</div>
-            <div class="calendar-weekday">{dayOfWeek}</div>
-          </div>
-        </Show>
+        <div
+          class="calendar-compact"
+          classList={{ "calendar-view-hidden": showExpanded() }}
+        >
+          <div class="calendar-month">{shortMonth}</div>
+          <div class="calendar-day">{currentDay}</div>
+          <div class="calendar-weekday">{dayOfWeek}</div>
+        </div>
 
         {/* Expanded view */}
-        <Show when={isZoomed()}>
-          <div class="calendar-expanded">
-            <div class="calendar-header">
-              <span class="calendar-month-full">{monthName} {currentYear}</span>
-            </div>
-            
-            <div class="calendar-weekdays">
-              {DAYS.map((day) => (
-                <div class="calendar-weekday-label">{day}</div>
-              ))}
-            </div>
-            
-            <div class="calendar-grid">
-              {calendarDays().map((day) => (
-                <div
-                  class="calendar-date"
-                  classList={{
-                    "calendar-date-empty": day === null,
-                    "calendar-date-today": day === currentDay,
-                  }}
-                >
-                  {day}
-                </div>
-              ))}
-            </div>
+        <div
+          class="calendar-expanded"
+          classList={{ "calendar-view-visible": showExpanded() }}
+        >
+          <div class="calendar-header">
+            <span class="calendar-month-full">
+              {monthName} {currentYear}
+            </span>
           </div>
-        </Show>
+
+          <div class="calendar-weekdays">
+            {DAYS.map((day) => (
+              <div class="calendar-weekday-label">{day}</div>
+            ))}
+          </div>
+
+          <div class="calendar-grid">
+            {calendarDays().map((day) => (
+              <div
+                class="calendar-date"
+                classList={{
+                  "calendar-date-empty": day === null,
+                  "calendar-date-today": day === currentDay,
+                }}
+              >
+                {day}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );
