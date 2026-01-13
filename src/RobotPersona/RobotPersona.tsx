@@ -1,5 +1,6 @@
 import { createSignal, Show } from "solid-js";
 import { SpeechBubble } from "./SpeechBubble";
+import { ChatPanel } from "./ChatPanel";
 import "./RobotPersona.css";
 
 export function RobotPersona() {
@@ -38,6 +39,9 @@ export function RobotPersona() {
             onWelcomeStart={() => setIsWelcomeStarted(true)}
             onWelcomeComplete={() => setIsWelcomeComplete(true)}
           />
+        </Show>
+        <Show when={isChatMode()}>
+          <ChatPanel onTalkingChange={setIsTalking} />
         </Show>
       </div>
     </>
