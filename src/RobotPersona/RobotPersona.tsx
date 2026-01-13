@@ -3,7 +3,17 @@ import { SpeechBubble } from "./SpeechBubble";
 import { ChatPanel } from "./ChatPanel";
 import "./RobotPersona.css";
 
-export function RobotPersona() {
+export type RoomActions = {
+  toggleLamp: () => void;
+  setLampOn: (on: boolean) => void;
+  isLampOn: () => boolean;
+};
+
+type RobotPersonaProps = {
+  roomActions: RoomActions;
+};
+
+export function RobotPersona(props: RobotPersonaProps) {
   const [isChatMode, setIsChatMode] = createSignal(false);
   const [isTalking, setIsTalking] = createSignal(false);
   const [isWelcomeStarted, setIsWelcomeStarted] = createSignal(false);
@@ -41,7 +51,10 @@ export function RobotPersona() {
           />
         </Show>
         <Show when={isChatMode()}>
-          <ChatPanel onTalkingChange={setIsTalking} />
+          <ChatPanel
+            onTalkingChange={setIsTalking}
+            roomActions={props.roomActions}
+          />
         </Show>
       </div>
     </>

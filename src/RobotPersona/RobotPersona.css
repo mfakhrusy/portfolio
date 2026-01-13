@@ -22,8 +22,7 @@
 .robot-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 999;
   animation: robotBackdropFadeIn 0.4s ease-out forwards;
 }

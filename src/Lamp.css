@@ -11,15 +11,20 @@
 .bulb {
   fill: #fbf8ca;
   fill-opacity: 0.1;
+  transition:
+    fill-opacity 0.5s ease,
+    fill 0.5s ease;
+}
+
+.bulb-on {
   animation: bulb 0.3s 2s 5 cubic-bezier(0.26, 1.17, 0.89, -0.74) alternate
     forwards;
 }
 
-.switch {
-  transition: transform 0.3s;
-  &:active {
-    transform: translateY(5px);
-  }
+.bulb-off {
+  fill-opacity: 0.1 !important;
+  fill: #555 !important;
+  animation: none;
 }
 
 @keyframes bulb {
@@ -46,22 +51,18 @@
     transform: translateY(-40px) rotate(-5deg);
     animation-timing-function: ease-in;
   }
-
   60% {
     transform: translateY(20px) rotate(3deg);
     animation-timing-function: var(--roll-curve);
   }
-
   75% {
     transform: translateY(-8px) rotate(3deg);
     animation-timing-function: var(--skid-curve);
   }
-
   90% {
     transform: translateY(10px) rotate(-3deg);
     animation-timing-function: ease-out;
   }
-
   95% {
     transform: translateY(10px) rotate(2deg);
     animation-timing-function: var(--skid-curve);

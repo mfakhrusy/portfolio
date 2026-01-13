@@ -17,6 +17,14 @@ const App = () => {
   const [scene, setScene] = createSignal<"office" | "lab">("office");
   const [focus, setFocus] = createSignal<string | null>(null);
   const [lampPhase, setLampPhase] = createSignal<LampPhase>("no-lamp");
+  const [isLampOn, setIsLampOn] = createSignal(true);
+
+  // ---------- Room Actions ----------
+  const roomActions = {
+    toggleLamp: () => setIsLampOn((prev) => !prev),
+    setLampOn: (on: boolean) => setIsLampOn(on),
+    isLampOn: () => isLampOn(),
+  };
 
   // ---------- Content ----------
   const contentByItem: Record<string, ContentItem> = {
@@ -106,7 +114,10 @@ const App = () => {
           classList={{
             brightened:
               scene() === "office" &&
-              (lampPhase() === "brightening" || lampPhase() === "placed"),
+              (lampPhase() === "brightening" || lampPhase() === "placed") &&
+              isLampOn(),
+            dimmed:
+              scene() === "office" && lampPhase() === "placed" && !isLampOn(),
           }}
           // classList={{ brightened: scene() === "office" }}
         >
@@ -120,10 +131,10 @@ const App = () => {
           </button> */}
 
           <Show when={scene() === "office"}>
-            <Lamp />
+            <Lamp isOn={isLampOn()} />
             <Clock />
             <Calendar />
-            <RobotPersona />
+            <RobotPersona roomActions={roomActions} />
           </Show>
 
           <nav aria-label="Scene navigation">

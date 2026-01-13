@@ -45,6 +45,11 @@
   transition-delay: 3.5s;
 }
 
+.room.dimmed {
+  filter: brightness(0.15);
+  transition-delay: 0s;
+}
+
 /* ---------- Item ---------- */
 .item {
   padding: 1rem 1.5rem;

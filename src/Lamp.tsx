@@ -1,13 +1,26 @@
-// Source of lamp/bulb: https://codepen.io/elrumordelaluz/pen/abqOGP
-
 import "./Lamp.css";
 
-export function Lamp() {
+type LampProps = {
+  isOn: boolean;
+};
+
+export function Lamp(props: LampProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 130" class="lamp">
-      {/* <!-- bulb --> */}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 60 130"
+      class="lamp"
+      classList={{ "lamp-off": !props.isOn }}
+    >
+      {/* bulb */}
       <g>
-        <circle class="bulb" style="" cx="30" cy="109.3" r="10.7" />
+        <circle
+          class="bulb"
+          classList={{ "bulb-on": props.isOn, "bulb-off": !props.isOn }}
+          cx="30"
+          cy="109.3"
+          r="10.7"
+        />
         <line
           style="fill:none;stroke:#D7D5AF;stroke-width:0.263;stroke-linecap:round;stroke-miterlimit:10;"
           x1="28.1"
@@ -27,7 +40,7 @@ export function Lamp() {
           points="27.8,113.5 28.3,112.8 28.8,113.5 29.6,112.8 30,113.5 30.7,112.9 31.2,113.5 31.8,112.8 32.3,113.5"
         />
       </g>
-      {/* <!-- /bulb --> */}
+      {/* lamp body */}
       <rect
         x="20.7"
         y="66.7"

@@ -1,4 +1,5 @@
 import { createSignal, For, createEffect } from "solid-js";
+import type { RoomActions } from "./RobotPersona";
 import "./ChatPanel.css";
 
 type ChatMessage = {
@@ -8,11 +9,66 @@ type ChatMessage = {
 
 type ChatPanelProps = {
   onTalkingChange?: (isTalking: boolean) => void;
+  roomActions: RoomActions;
 };
+
+type CommandResult = {
+  handled: boolean;
+  response: string;
+};
+
+function parseCommand(text: string, roomActions: RoomActions): CommandResult {
+  const lower = text.toLowerCase();
+
+  // Lamp commands
+  if (
+    lower.includes("turn off") &&
+    (lower.includes("light") || lower.includes("lamp"))
+  ) {
+    roomActions.setLampOn(false);
+    return { handled: true, response: "Done! I've turned off the lamp." };
+  }
+
+  if (
+    lower.includes("turn on") &&
+    (lower.includes("light") || lower.includes("lamp"))
+  ) {
+    roomActions.setLampOn(true);
+    return { handled: true, response: "There you go! The lamp is now on." };
+  }
+
+  if (
+    lower.includes("toggle") &&
+    (lower.includes("light") || lower.includes("lamp"))
+  ) {
+    roomActions.toggleLamp();
+    const isOn = roomActions.isLampOn();
+    return {
+      handled: true,
+      response: isOn ? "Lamp is now on!" : "Lamp is now off!",
+    };
+  }
+
+  if (lower.includes("dark") || lower.includes("dim")) {
+    roomActions.setLampOn(false);
+    return { handled: true, response: "Making it dark for you..." };
+  }
+
+  if (lower.includes("bright") || lower.includes("light up")) {
+    roomActions.setLampOn(true);
+    return { handled: true, response: "Let there be light!" };
+  }
+
+  return { handled: false, response: "" };
+}
 
 export function ChatPanel(props: ChatPanelProps) {
   const [messages, setMessages] = createSignal<ChatMessage[]>([
-    { role: "robot", content: "Hi! Ask me anything about Fahru." },
+    {
+      role: "robot",
+      content:
+        "Hi! Ask me anything about Fahru, or try controlling the room - like 'turn off the light'!",
+    },
   ]);
   const [inputValue, setInputValue] = createSignal("");
   const [isTyping, setIsTyping] = createSignal(false);
@@ -60,8 +116,18 @@ export function ChatPanel(props: ChatPanelProps) {
     setMessages((prev) => [...prev, { role: "user", content: text }]);
     setInputValue("");
 
-    await delay(500);
-    await typeResponse("Thanks for your message! LLM integration coming soon.");
+    await delay(300);
+
+    // Check for room commands
+    const commandResult = parseCommand(text, props.roomActions);
+
+    if (commandResult.handled) {
+      await typeResponse(commandResult.response);
+    } else {
+      await typeResponse(
+        "Thanks for your message! LLM integration coming soon.",
+      );
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
