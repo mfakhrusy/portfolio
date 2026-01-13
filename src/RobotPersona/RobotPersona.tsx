@@ -4,14 +4,13 @@ import "./RobotPersona.css";
 
 export function RobotPersona() {
   const [isChatMode, setIsChatMode] = createSignal(false);
+  const [isTalking, setIsTalking] = createSignal(false);
+  const [isWelcomeStarted, setIsWelcomeStarted] = createSignal(false);
+  const [isWelcomeComplete, setIsWelcomeComplete] = createSignal(false);
 
   const handleRobotClick = (e: Event) => {
     e.stopPropagation();
-    if (isChatMode()) {
-      setIsChatMode(false);
-    } else {
-      setIsChatMode(true);
-    }
+    setIsChatMode(true);
   };
 
   const handleBackdropClick = () => {
@@ -29,16 +28,28 @@ export function RobotPersona() {
         classList={{ "robot-persona-chat-mode": isChatMode() }}
         onClick={handleRobotClick}
       >
-        <RobotPersonaSvg />
+        <RobotPersonaSvg
+          isTalking={isTalking()}
+          showWave={isWelcomeStarted() && !isWelcomeComplete()}
+        />
         <Show when={!isChatMode()}>
-          <SpeechBubble />
+          <SpeechBubble
+            onTalkingChange={setIsTalking}
+            onWelcomeStart={() => setIsWelcomeStarted(true)}
+            onWelcomeComplete={() => setIsWelcomeComplete(true)}
+          />
         </Show>
       </div>
     </>
   );
 }
 
-function RobotPersonaSvg() {
+type RobotPersonaSvgProps = {
+  isTalking: boolean;
+  showWave: boolean;
+};
+
+function RobotPersonaSvg(props: RobotPersonaSvgProps) {
   return (
     <svg
       class="robot-persona-svg"
@@ -71,8 +82,8 @@ function RobotPersonaSvg() {
 
       <RobotPersonaRightEye />
       <RobotPersonaLeftEye />
-      <RobotPersonaMouth />
-      <RobotPersonaRightHand />
+      <RobotPersonaMouth isTalking={props.isTalking} />
+      <RobotPersonaRightHand showWave={props.showWave} />
       <RobotPersonaLeftHand />
     </svg>
   );
@@ -97,10 +108,11 @@ function RobotPersonaLeftEye() {
   );
 }
 
-function RobotPersonaMouth() {
+function RobotPersonaMouth(props: { isTalking: boolean }) {
   return (
     <rect
       class="robot-mouth"
+      classList={{ "robot-mouth-talking": props.isTalking }}
       x={698.198}
       y={400.496}
       width={253.49}
@@ -109,11 +121,12 @@ function RobotPersonaMouth() {
   );
 }
 
-function RobotPersonaRightHand() {
+function RobotPersonaRightHand(props: { showWave: boolean }) {
   return (
     <g class="robot-right-hand-group">
       <path
         class="robot-right-hand"
+        classList={{ "robot-right-hand-waving": props.showWave }}
         d="M4.483,423.544c49.795,-26.362 55.164,-30.647 55.164,-30.647c0,0 9.194,177.75 113.392,101.134c104.198,-76.617 -19.29,-161.525 -47.953,-160.444c-28.663,1.081 52.55,-46.421 52.55,-46.421c0,0 173.153,176.218 55.164,263.561c-117.989,87.343 -254.367,-113.392 -228.317,-127.183Z"
       />
     </g>

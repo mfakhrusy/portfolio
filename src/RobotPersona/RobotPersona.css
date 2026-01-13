@@ -74,9 +74,11 @@
   fill: #606060;
   stroke: #000;
   stroke-width: 2.5px;
-  animation: talk 0.3s ease-in-out infinite;
-  animation-delay: 5s;
   transform-origin: 825px 415px;
+}
+
+.robot-mouth-talking {
+  animation: talk 0.3s ease-in-out infinite;
 }
 
 @keyframes wave {
@@ -101,8 +103,10 @@
   stroke: #000;
   stroke-width: 2.5px;
   transform-origin: 180px 550px;
+}
+
+.robot-right-hand-waving {
   animation: wave 0.5s ease-in-out infinite;
-  animation-delay: 5s;
 }
 
 .robot-left-hand {

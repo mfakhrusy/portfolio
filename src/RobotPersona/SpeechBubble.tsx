@@ -9,7 +9,13 @@ const sentences = [
   " Take a look around.",
 ];
 
-export function SpeechBubble() {
+type SpeechBubbleProps = {
+  onTalkingChange?: (isTalking: boolean) => void;
+  onWelcomeStart?: () => void;
+  onWelcomeComplete?: () => void;
+};
+
+export function SpeechBubble(props: SpeechBubbleProps) {
   const [displayedText, setDisplayedText] = createSignal("");
   const [isVisible, setIsVisible] = createSignal(false);
 
@@ -20,21 +26,28 @@ export function SpeechBubble() {
     let currentText = "";
 
     for (const sentence of sentences) {
+      props.onTalkingChange?.(true);
+
       for (let i = 0; i < sentence.length; i++) {
         currentText += sentence[i];
         setDisplayedText(currentText);
         await delay(50);
       }
 
+      props.onTalkingChange?.(false);
+
       if (sentence !== sentences[sentences.length - 1]) {
         await delay(1500);
       }
     }
+
+    props.onWelcomeComplete?.();
   };
 
   onMount(() => {
     setTimeout(() => {
       setIsVisible(true);
+      props.onWelcomeStart?.();
       animateSentences();
     }, 5000);
   });
