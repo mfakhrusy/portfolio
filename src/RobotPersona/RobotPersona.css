@@ -76,10 +76,16 @@
   stroke: #000;
   stroke-width: 2.5px;
   transform-origin: 825px 415px;
+  transform: scaleY(1);
+  animation: none;
 }
 
 .robot-mouth-talking {
   animation: talk 0.3s ease-in-out infinite;
+}
+
+.robot-mouth:not(.robot-mouth-talking) {
+  transform: scaleY(1) !important;
 }
 
 @keyframes wave {
