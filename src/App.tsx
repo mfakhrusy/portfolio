@@ -4,6 +4,7 @@ import type { LampPhase } from "./type";
 import { Lamp } from "./Lamp";
 import { Clock } from "./Clock";
 import { Calendar } from "./Calendar";
+import { Door } from "./Door";
 import { RobotPersona } from "./RobotPersona/RobotPersona";
 
 type ContentItem = {
@@ -19,6 +20,7 @@ const App = () => {
   const [lampPhase, setLampPhase] = createSignal<LampPhase>("no-lamp");
   const [isLampOn, setIsLampOn] = createSignal(true);
   const [isInteractive, setIsInteractive] = createSignal(false);
+  const [isEnteringDoor, setIsEnteringDoor] = createSignal(false);
 
   // ---------- Room Actions ----------
   const roomActions = {
@@ -103,14 +105,34 @@ const App = () => {
     dispatch("OVERLAY_CLOSE");
   };
 
-  // console.log({lampPhase: lampPhase()})
+  const handleDoorEnter = () => {
+    if (isEnteringDoor()) return;
+    setIsEnteringDoor(true);
+    // After animation completes, switch scene
+    setTimeout(() => {
+      // setScene("lab");
+      setIsEnteringDoor(false);
+    }, 1500);
+  };
 
   return (
-    <main class="app" role="main">
+    <main
+      class="app"
+      classList={{ "app-entering-door": isEnteringDoor() }}
+      role="main"
+    >
+      {/* Door transition overlay */}
+      <Show when={isEnteringDoor()}>
+        <div class="door-transition-overlay" />
+      </Show>
+
       {/* Office Scene */}
       <section
         class="scene"
-        classList={{ active: scene() === "office" }}
+        classList={{
+          active: scene() === "office",
+          "scene-entering": isEnteringDoor(),
+        }}
         data-scene="office"
         aria-label="Office scene"
       >
@@ -139,6 +161,7 @@ const App = () => {
             <Lamp isOn={isLampOn()} />
             <Clock isInteractive={isInteractive()} />
             <Calendar isInteractive={isInteractive()} />
+            <Door isInteractive={isInteractive()} onEnter={handleDoorEnter} />
             <RobotPersona
               roomActions={roomActions}
               isInteractive={isInteractive()}

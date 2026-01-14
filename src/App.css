@@ -1,7 +1,15 @@
 .app {
   width: 100%;
   height: 100%;
+  /* perspective: 100px;
+  perspective-origin: bottom right; */
 }
+
+/* .app-entering-door {
+  pointer-events: none;
+  transform: scale(4);
+  transform-origin: 70% 70%;
+} */
 
 /* ---------- Scene ---------- */
 .scene {
@@ -156,3 +164,64 @@ button:focus-visible {
   outline: 2px solid var(--color-accent-hover);
   outline-offset: 2px;
 }
+
+/* ---------- Door Transition ---------- */
+.scene-entering {
+  animation: enterDoor 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  /* transform-origin: 70% 70%; */
+}
+
+@keyframes enterDoor {
+  0% {
+    transform: scale(1);
+    transform-origin: 90% 70%;
+    opacity: 1;
+  }
+  /* 40% {
+    transform: scale(1.5);
+    transform-origin: 70% 70%;
+    opacity: 1;
+  }
+  70% {
+    transform: scale(2.5);
+    transform-origin: 70% 70%;
+    opacity: 0.8;
+  } */
+  100% {
+    transform: scale(4);
+    transform-origin: 90% 70%;
+    opacity: 0;
+  }
+}
+
+/* .door-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 80% 60% at 85% 60%,
+    transparent 0%,
+    transparent 10%,
+    rgba(0, 0, 0, 0.3) 30%,
+    rgba(0, 0, 0, 0.95) 70%,
+    #000 100%
+  );
+  animation: doorOverlayFade 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes doorOverlayFade {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.3;
+  }
+  60% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+    background: #000;
+  }
+} */
