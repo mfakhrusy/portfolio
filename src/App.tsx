@@ -6,6 +6,7 @@ import { Clock } from "./Clock";
 import { Calendar } from "./Calendar";
 import { Door } from "./Door";
 import { RobotPersona } from "./RobotPersona/RobotPersona";
+import { Lab3D } from "./Lab3D";
 
 type ContentItem = {
   title: string;
@@ -90,11 +91,6 @@ const App = () => {
   };
 
   // ---------- Handlers ----------
-  const handleItemClick = (itemId: string) => (e: Event) => {
-    e.preventDefault();
-    dispatch("ITEM_FOCUS", { itemId });
-  };
-
   const handleSceneSwitch = (sceneId: string) => (e: Event) => {
     e.preventDefault();
     dispatch("SCENE_SWITCH", { sceneId });
@@ -110,9 +106,13 @@ const App = () => {
     setIsEnteringDoor(true);
     // After animation completes, switch scene
     setTimeout(() => {
-      // setScene("lab");
+      setScene("lab");
       setIsEnteringDoor(false);
     }, 1500);
+  };
+
+  const handleLabExit = () => {
+    setScene("office");
   };
 
   return (
@@ -177,34 +177,16 @@ const App = () => {
         </div>
       </section>
 
-      {/* Lab Scene */}
+      {/* Lab Scene - 3D Room */}
       <section
         class="scene"
         classList={{ active: scene() === "lab" }}
         data-scene="lab"
         aria-label="Lab scene"
       >
-        <div class="room">
-          <button
-            class="item"
-            data-focus="robot"
-            aria-label="View robot details"
-            onClick={handleItemClick("robot")}
-          >
-            Robot
-          </button>
-
-          <nav aria-label="Scene navigation">
-            <button
-              class="switch"
-              data-scene="office"
-              aria-label="Back to Office"
-              onClick={handleSceneSwitch("office")}
-            >
-              ← Back to Office
-            </button>
-          </nav>
-        </div>
+        <Show when={scene() === "lab"}>
+          <Lab3D onBack={handleLabExit} />
+        </Show>
       </section>
 
       {/* Overlay */}

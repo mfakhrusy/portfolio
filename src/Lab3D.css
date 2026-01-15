@@ -1,0 +1,162 @@
+/* Room depth - how far back the room extends */
+:root {
+  --room-depth: 600px;
+  --room-width: 100vw;
+  --room-height: 100vh;
+}
+
+.lab-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+  perspective-origin: 50% 50%;
+  background: #0a0a0a;
+  overflow: hidden;
+}
+
+.lab-room {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+}
+
+/* Entry animation - start zoomed in, pull back to normal view */
+.lab-room-entering {
+  animation: roomEnter 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes roomEnter {
+  0% {
+    transform: translateZ(400px);
+  }
+  100% {
+    transform: translateZ(0);
+  }
+}
+
+/* Common wall styles */
+.lab-wall {
+  position: absolute;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid rgba(56, 189, 248, 0.08);
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.6);
+  backface-visibility: visible;
+}
+
+/* Back wall - directly facing us at the end of the room */
+.lab-wall-back {
+  width: var(--room-width);
+  height: var(--room-height);
+  left: 0;
+  top: 0;
+  transform: translateZ(calc(-1 * var(--room-depth)));
+  background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+/* Front wall - behind the camera (invisible) */
+.lab-wall-front {
+  display: none;
+}
+
+/* Left wall */
+.lab-wall-left {
+  width: var(--room-depth);
+  height: var(--room-height);
+  left: 0;
+  top: 0;
+  transform-origin: left center;
+  transform: rotateY(90deg);
+  background: linear-gradient(90deg, #0f0f1a 0%, #1a1a2e 100%);
+}
+
+/* Right wall */
+.lab-wall-right {
+  width: var(--room-depth);
+  height: var(--room-height);
+  right: 0;
+  top: 0;
+  transform-origin: right center;
+  transform: rotateY(-90deg);
+  background: linear-gradient(-90deg, #0f0f1a 0%, #1a1a2e 100%);
+}
+
+/* Floor */
+.lab-wall-floor {
+  width: var(--room-width);
+  height: var(--room-depth);
+  left: 0;
+  bottom: 0;
+  transform-origin: bottom center;
+  transform: rotateX(90deg);
+  background: linear-gradient(180deg, #1a1a2e 0%, #2a2a4e 50%, #1a1a2e 100%);
+  /* Grid pattern for floor */
+  background-image:
+    linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+    linear-gradient(180deg, #1a1a2e 0%, #2a2a4e 50%, #1a1a2e 100%);
+  background-size:
+    60px 60px,
+    60px 60px,
+    100% 100%;
+}
+
+/* Ceiling */
+.lab-wall-ceiling {
+  width: var(--room-width);
+  height: var(--room-depth);
+  left: 0;
+  top: 0;
+  transform-origin: top center;
+  transform: rotateX(-90deg);
+  background: linear-gradient(180deg, #0a0a15 0%, #0f0f1a 100%);
+  /* Subtle ceiling panels */
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(180deg, #0a0a15 0%, #0f0f1a 100%);
+  background-size:
+    120px 120px,
+    120px 120px,
+    100% 100%;
+}
+
+/* Ambient lighting effect on walls */
+.lab-wall::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(56, 189, 248, 0.03) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Back button */
+.lab-back-button {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateZ(100px);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: rgba(56, 189, 248, 0.8);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+.lab-back-button:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.5);
+  color: #38bdf8;
+}
