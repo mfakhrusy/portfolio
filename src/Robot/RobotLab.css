@@ -11,7 +11,7 @@
 
 /* Start behind camera, invisible */
 .robot-lab-waiting {
-  transform: translate(-50%, -50%) translateZ(500px) rotateY(180deg);
+  transform: translate(-50%, -50%) translateZ(500px);
   opacity: 0;
 }
 
@@ -22,37 +22,21 @@
 
 @keyframes robotLabEnter {
   0% {
-    transform: translate(-50%, -50%) translateZ(500px) rotateY(180deg)
-      translateY(20px);
+    transform: translate(-50%, -50%) translateZ(500px) translateY(20px);
     opacity: 0;
   }
   20% {
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -50%) translateZ(-200px) rotateY(180deg)
-      translateY(0px);
+    transform: translate(-50%, -50%) translateZ(-200px) translateY(0px);
     opacity: 1;
   }
 }
 
-/* Turn around to face the user */
-.robot-lab-turning {
-  animation: robotLabTurn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes robotLabTurn {
-  0% {
-    transform: translate(-50%, -50%) translateZ(-200px) rotateY(180deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) translateZ(-200px) rotateY(0deg);
-  }
-}
-
-/* Final facing position */
-.robot-lab-facing {
-  transform: translate(-50%, -50%) translateZ(-200px) rotateY(0deg);
+/* Arrived at back of room */
+.robot-lab-arrived {
+  transform: translate(-50%, -50%) translateZ(-200px);
 }
 
 /* Robot body container for flip effect */
@@ -64,7 +48,7 @@
 }
 
 /* Float animation when idle */
-.robot-lab-facing .robot-lab-body {
+.robot-lab-arrived .robot-lab-body {
   animation: robotLabFloat 3s ease-in-out infinite;
 }
 

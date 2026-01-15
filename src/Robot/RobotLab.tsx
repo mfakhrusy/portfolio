@@ -8,7 +8,7 @@ const labSentences = [
   " This is where I experiment with new ideas...",
 ];
 
-type RobotLabPhase = "waiting" | "entering" | "turning" | "facing" | "talking";
+type RobotLabPhase = "waiting" | "entering" | "arrived" | "talking";
 
 type RobotLabProps = {
   onEntryComplete?: () => void;
@@ -30,20 +30,15 @@ export function RobotLab(props: RobotLabProps) {
       setPhase("entering");
     }, 2200);
 
-    // Start turning - this is when view switches to "front"
+    // Arrived at back of room - show face
     setTimeout(() => {
-      setPhase("turning");
+      setPhase("arrived");
     }, 4200);
-
-    // Facing complete
-    setTimeout(() => {
-      setPhase("facing");
-    }, 5200);
 
     // Start talking
     setTimeout(() => {
       setPhase("talking");
-    }, 5700);
+    }, 4700);
   });
 
   const handleSpeechComplete = () => {
@@ -57,8 +52,7 @@ export function RobotLab(props: RobotLabProps) {
       classList={{
         "robot-lab-waiting": phase() === "waiting",
         "robot-lab-entering": phase() === "entering",
-        "robot-lab-turning": phase() === "turning",
-        "robot-lab-facing": phase() === "facing" || phase() === "talking",
+        "robot-lab-arrived": phase() === "arrived" || phase() === "talking",
       }}
     >
       <div class="robot-lab-body">
