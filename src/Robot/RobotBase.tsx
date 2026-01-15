@@ -14,6 +14,8 @@ export type RobotBaseProps = {
 export function RobotBase(props: RobotBaseProps) {
   const isFront = () => (props.view ?? "front") === "front";
 
+  console.log(isFront());
+
   return (
     <svg
       class={`robot-base-svg ${props.class ?? ""}`}

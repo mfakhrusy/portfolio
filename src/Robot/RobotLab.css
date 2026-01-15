@@ -78,22 +78,6 @@
   }
 }
 
-/* Back side of robot */
-.robot-lab-back {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  transform: rotateY(180deg);
-}
-
-/* Front side of robot */
-.robot-lab-front {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  transform: rotateY(0deg);
-}
-
 /* ========== Lab Robot Speech Bubble Position ========== */
 
 .robot-lab-speech {
