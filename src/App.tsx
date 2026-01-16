@@ -6,6 +6,7 @@ import { Clock } from "./Clock";
 import { Calendar } from "./Calendar";
 import { Door } from "./Door";
 import { RobotOffice } from "./Robot/RobotOffice";
+import { RobotProvider } from "./Robot/RobotContext";
 import { Lab3D } from "./Lab3D";
 
 type ContentItem = {
@@ -189,10 +190,12 @@ const App = () => {
             <Clock isInteractive={isInteractive()} />
             <Calendar isInteractive={isInteractive()} />
             <Door isInteractive={isInteractive()} onEnter={handleDoorEnter} />
-            <RobotOffice
-              roomActions={roomActions}
-              isInteractive={isInteractive()}
-            />
+            <RobotProvider>
+              <RobotOffice
+                roomActions={roomActions}
+                isInteractive={isInteractive()}
+              />
+            </RobotProvider>
           </Show>
 
           <nav aria-label="Scene navigation">

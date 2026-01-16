@@ -4,6 +4,7 @@ import { SpeechBubble } from "./SpeechBubble";
 import { ChatPanel } from "./ChatPanel";
 import { parseOfficeCommand } from "./commands/officeCommands";
 import type { OfficeActions } from "./types";
+import { useRobot } from "./RobotContext";
 import "./RobotOffice.css";
 
 export type { OfficeActions };
@@ -14,8 +15,8 @@ type RobotOfficeProps = {
 };
 
 export function RobotOffice(props: RobotOfficeProps) {
+  const { isTalking, setIsTalking } = useRobot();
   const [isChatMode, setIsChatMode] = createSignal(false);
-  const [isTalking, setIsTalking] = createSignal(false);
   const [isWelcomeStarted, setIsWelcomeStarted] = createSignal(false);
   const [isWelcomeComplete, setIsWelcomeComplete] = createSignal(false);
 

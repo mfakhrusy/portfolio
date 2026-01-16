@@ -1,6 +1,7 @@
 import { createSignal, onMount, For, createEffect } from "solid-js";
 import { parseLabCommand } from "./Robot/commands/labCommands";
 import type { LabActions } from "./Robot/types";
+import { useRobot } from "./Robot/RobotContext";
 import "./LabTerminal.css";
 
 type TerminalLine = {
@@ -10,11 +11,11 @@ type TerminalLine = {
 
 type LabTerminalProps = {
   labActions: LabActions;
-  onTalkingChange?: (isTalking: boolean) => void;
   handleBack?: () => void;
 };
 
 export function LabTerminal(props: LabTerminalProps) {
+  const { setIsTalking } = useRobot();
   const [lines, setLines] = createSignal<TerminalLine[]>([]);
   const [inputValue, setInputValue] = createSignal("");
   const [isTyping, setIsTyping] = createSignal(false);
@@ -36,7 +37,7 @@ export function LabTerminal(props: LabTerminalProps) {
 
   const typeRobotMessage = async (text: string) => {
     setIsTyping(true);
-    props.onTalkingChange?.(true);
+    setIsTalking(true);
 
     // Add empty line that will be filled
     setLines((prev) => [...prev, { type: "robot", text: "" }]);
@@ -54,7 +55,7 @@ export function LabTerminal(props: LabTerminalProps) {
       await delay(30);
     }
 
-    props.onTalkingChange?.(false);
+    setIsTalking(false);
     setIsTyping(false);
   };
 

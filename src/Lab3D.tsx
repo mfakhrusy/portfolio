@@ -1,6 +1,7 @@
 import { createSignal, onMount, Show } from "solid-js";
 import "./Lab3D.css";
 import { RobotLab } from "./Robot/RobotLab";
+import { RobotProvider } from "./Robot/RobotContext";
 import type { LabActions, LabPaintColor } from "./Robot/types";
 import { LabTerminal } from "./LabTerminal";
 import { LabClock } from "./LabClock";
@@ -71,43 +72,45 @@ export function Lab3D(props: Lab3DProps) {
   });
 
   return (
-    <div
-      class="lab-container"
-      style={{
-        "--lab-primary": palette().primary,
-        "--lab-secondary": palette().secondary,
-        "--lab-dark": palette().dark,
-        "--lab-accent": palette().accent,
-      }}
-    >
-      <div class="lab-room" classList={{ "lab-room-entering": isEntering() }}>
-        {/* Back wall - facing us */}
-        <div class="lab-wall lab-wall-back" />
+    <RobotProvider>
+      <div
+        class="lab-container"
+        style={{
+          "--lab-primary": palette().primary,
+          "--lab-secondary": palette().secondary,
+          "--lab-dark": palette().dark,
+          "--lab-accent": palette().accent,
+        }}
+      >
+        <div class="lab-room" classList={{ "lab-room-entering": isEntering() }}>
+          {/* Back wall - facing us */}
+          <div class="lab-wall lab-wall-back" />
 
-        {/* Front wall - where we entered (transparent) */}
-        <div class="lab-wall lab-wall-front" />
+          {/* Front wall - where we entered (transparent) */}
+          <div class="lab-wall lab-wall-front" />
 
-        {/* Left wall */}
-        <div class="lab-wall lab-wall-left" />
+          {/* Left wall */}
+          <div class="lab-wall lab-wall-left" />
 
-        {/* Right wall */}
-        <div class="lab-wall lab-wall-right">
-          <div class="lab-clock-wrapper">
-            <LabClock />
+          {/* Right wall */}
+          <div class="lab-wall lab-wall-right">
+            <div class="lab-clock-wrapper">
+              <LabClock />
+            </div>
           </div>
+
+          {/* Floor */}
+          <div class="lab-wall lab-wall-floor" />
+
+          {/* Ceiling */}
+          <div class="lab-wall lab-wall-ceiling" />
+
+          <RobotLab />
         </div>
-
-        {/* Floor */}
-        <div class="lab-wall lab-wall-floor" />
-
-        {/* Ceiling */}
-        <div class="lab-wall lab-wall-ceiling" />
-
-        <RobotLab labActions={labActions} />
+        <Show when={!isEntering()}>
+          <LabTerminal labActions={labActions} handleBack={props.onBack} />
+        </Show>
       </div>
-      <Show when={!isEntering()}>
-        <LabTerminal labActions={labActions} handleBack={props.onBack} />
-      </Show>
-    </div>
+    </RobotProvider>
   );
 }

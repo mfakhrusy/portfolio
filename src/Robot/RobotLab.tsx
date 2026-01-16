@@ -1,18 +1,17 @@
 import { createSignal, onMount } from "solid-js";
 import { RobotBase, type RobotView } from "./RobotBase";
-import type { LabActions } from "./types";
+import { useRobot } from "./RobotContext";
 import "./RobotLab.css";
 
 type RobotLabPhase = "waiting" | "entering" | "arrived" | "terminal";
 
 type RobotLabProps = {
-  labActions: LabActions;
   onEntryComplete?: () => void;
 };
 
 export function RobotLab(props: RobotLabProps) {
+  const { isTalking } = useRobot();
   const [phase, setPhase] = createSignal<RobotLabPhase>("waiting");
-  const [isTalking, setIsTalking] = createSignal(false);
 
   const robotView = (): RobotView => {
     const p = phase();
