@@ -1,13 +1,15 @@
 import { createSignal, onMount, Show } from "solid-js";
 import "./SpeechBubble.css";
 
-const defaultSentences = [
+const welcomeSentences = [
   "Hello, this is Flo. ",
   "I'm just a robot companion. ",
   "My creator is Fahru, ",
   "a software engineer. ",
   "This place is a way for him to express himself. ",
-  "Enjoy your visit!",
+  "Enjoy your visit! ",
+  "Hint: ",
+  "You probably want to open the door.",
 ];
 
 type SpeechBubbleProps = {
@@ -22,7 +24,7 @@ export function SpeechBubble(props: SpeechBubbleProps) {
   const [displayedText, setDisplayedText] = createSignal("");
   const [isVisible, setIsVisible] = createSignal(false);
 
-  const sentences = () => props.sentences ?? defaultSentences;
+  const sentences = () => props.sentences ?? welcomeSentences;
   const startDelay = () => props.startDelay ?? 5000;
 
   const delay = (ms: number) =>
@@ -84,6 +86,7 @@ export function SpeechBubble(props: SpeechBubbleProps) {
   const lineCount = () => lines().length;
 
   const bubbleHeight = () => {
+    if (lineCount() >= 6) return 170;
     if (lineCount() >= 5) return 150;
     if (lineCount() >= 4) return 130;
     if (lineCount() >= 3) return 110;
