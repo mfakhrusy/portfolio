@@ -69,7 +69,7 @@ export function LabTerminal(props: LabTerminalProps) {
     await delay(300);
     await typeRobotMessage("Welcome to the lab!");
     await delay(800);
-    await typeRobotMessage("This is where I experiment with new ideas.");
+    await typeRobotMessage("This is where Fahru experiment with new ideas.");
     await delay(500);
     await typeRobotMessage("Try: 'paint it green' or 'make it red'");
     inputRef?.focus();
@@ -108,7 +108,7 @@ export function LabTerminal(props: LabTerminalProps) {
     <div class="lab-terminal">
       {/* Header */}
       <div class="lab-terminal-header">
-        <span class="lab-terminal-title">LAB TERMINAL v1.0</span>
+        <span class="lab-terminal-title">FLO TERMINAL v0.0</span>
         <div class="lab-terminal-status">
           <span class="lab-terminal-dot" />
           <span class="lab-terminal-dot" />
@@ -129,7 +129,7 @@ export function LabTerminal(props: LabTerminalProps) {
               }}
             >
               <span class="lab-terminal-prefix">
-                {line.type === "robot" && "> "}
+                {line.type === "robot" && "Flo: "}
                 {line.type === "user" && "$ "}
                 {line.type === "system" && "// "}
               </span>
