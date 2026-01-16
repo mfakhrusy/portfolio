@@ -109,9 +109,9 @@ export function SpeechBubble(props: SpeechBubbleProps) {
               ${bubbleWidth},15
               ${bubbleWidth},${bubbleHeight() - 15}
               ${bubbleWidth - 15},${bubbleHeight()}
-              55,${bubbleHeight()}
-              35,${bubbleHeight() + 15}
-              25,${bubbleHeight()}
+              ${bubbleWidth / 2 + 15},${bubbleHeight()}
+              ${bubbleWidth / 2},${bubbleHeight() + 15}
+              ${bubbleWidth / 2 - 15},${bubbleHeight()}
               15,${bubbleHeight()}
               0,${bubbleHeight() - 15}
               0,15
