@@ -90,6 +90,12 @@ export function parseLabCommand(
   }
 
   if (lower.includes("stop rain") || lower.includes("stop sound")) {
+    if (!actions.isWebpageVisible()) {
+      return {
+        handled: true,
+        response: "What rain? It's perfectly dry in here!",
+      };
+    }
     actions.hideWebpage();
     return { handled: true, response: "Stopping the rain sounds." };
   }
