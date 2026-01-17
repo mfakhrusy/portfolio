@@ -1,4 +1,4 @@
-import { createSignal, onMount, For, createEffect } from "solid-js";
+import { createSignal, onMount, For, createEffect, Show } from "solid-js";
 import { parseLabCommand } from "../../Robot/commands/labCommands";
 import type { LabActions } from "../../Robot/types";
 import { useRobot } from "../../Robot/RobotContext";
@@ -19,6 +19,7 @@ export function LabTerminal(props: LabTerminalProps) {
   const [lines, setLines] = createSignal<TerminalLine[]>([]);
   const [inputValue, setInputValue] = createSignal("");
   const [isTyping, setIsTyping] = createSignal(false);
+  const [isMinimized, setIsMinimized] = createSignal(false);
 
   let messagesEndRef: HTMLDivElement | undefined;
   let inputRef: HTMLInputElement | undefined;
@@ -106,58 +107,74 @@ export function LabTerminal(props: LabTerminalProps) {
   };
 
   return (
-    <div class="lab-terminal">
-      {/* Header */}
-      <div class="lab-terminal-header">
-        <span class="lab-terminal-title">FLO TERMINAL v0.0</span>
-        <div class="lab-terminal-status">
-          <span class="lab-terminal-dot" />
-          <span class="lab-terminal-dot" />
-          <span class="lab-terminal-dot" />
-        </div>
-      </div>
-
-      {/* Terminal output */}
-      <div class="lab-terminal-output">
-        <For each={lines()}>
-          {(line) => (
-            <div
-              class="lab-terminal-line"
-              classList={{
-                "lab-terminal-line-robot": line.type === "robot",
-                "lab-terminal-line-user": line.type === "user",
-                "lab-terminal-line-system": line.type === "system",
-              }}
+    <>
+      <Show when={!isMinimized()}>
+        <div class="lab-terminal">
+          {/* Header */}
+          <div class="lab-terminal-header">
+            <span class="lab-terminal-title">FLO TERMINAL v0.0</span>
+            <button
+              class="lab-terminal-minimize"
+              onClick={() => setIsMinimized(true)}
+              title="Minimize"
             >
-              <span class="lab-terminal-prefix">
-                {line.type === "robot" && "Flo: "}
-                {line.type === "user" && "$ "}
-                {line.type === "system" && "// "}
-              </span>
-              <span class="lab-terminal-text">{line.text}</span>
-            </div>
-          )}
-        </For>
-        <div ref={messagesEndRef} />
-      </div>
+              <span class="lab-terminal-minimize-icon" />
+            </button>
+          </div>
 
-      {/* Input */}
-      <div class="lab-terminal-input-container">
-        <span class="lab-terminal-prompt">$</span>
-        <input
-          ref={inputRef}
-          type="text"
-          class="lab-terminal-input"
-          placeholder={isTyping() ? "..." : "Enter command..."}
-          value={inputValue()}
-          onInput={(e) => setInputValue(e.currentTarget.value)}
-          onKeyDown={handleKeyDown}
-          disabled={isTyping()}
-        />
-      </div>
+          {/* Terminal output */}
+          <div class="lab-terminal-output">
+            <For each={lines()}>
+              {(line) => (
+                <div
+                  class="lab-terminal-line"
+                  classList={{
+                    "lab-terminal-line-robot": line.type === "robot",
+                    "lab-terminal-line-user": line.type === "user",
+                    "lab-terminal-line-system": line.type === "system",
+                  }}
+                >
+                  <span class="lab-terminal-prefix">
+                    {line.type === "robot" && "Flo: "}
+                    {line.type === "user" && "$ "}
+                    {line.type === "system" && "// "}
+                  </span>
+                  <span class="lab-terminal-text">{line.text}</span>
+                </div>
+              )}
+            </For>
+            <div ref={messagesEndRef} />
+          </div>
 
-      {/* Scanline effect */}
-      <div class="lab-terminal-scanline" />
-    </div>
+          {/* Input */}
+          <div class="lab-terminal-input-container">
+            <span class="lab-terminal-prompt">$</span>
+            <input
+              ref={inputRef}
+              type="text"
+              class="lab-terminal-input"
+              placeholder={isTyping() ? "..." : "Enter command..."}
+              value={inputValue()}
+              onInput={(e) => setInputValue(e.currentTarget.value)}
+              onKeyDown={handleKeyDown}
+              disabled={isTyping()}
+            />
+          </div>
+
+          {/* Scanline effect */}
+          <div class="lab-terminal-scanline" />
+        </div>
+      </Show>
+
+      <Show when={isMinimized()}>
+        <button
+          class="lab-terminal-fab"
+          onClick={() => setIsMinimized(false)}
+          title="Open Terminal"
+        >
+          <span class="lab-terminal-fab-icon">&gt;_</span>
+        </button>
+      </Show>
+    </>
   );
 }
