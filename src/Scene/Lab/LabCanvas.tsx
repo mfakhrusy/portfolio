@@ -3,6 +3,7 @@ import "./LabCanvas.css";
 
 type LabCanvasProps = {
   backWallRef: HTMLDivElement | undefined;
+  brushColor: string;
 };
 
 export function LabCanvas(props: LabCanvasProps) {
@@ -56,7 +57,7 @@ export function LabCanvas(props: LabCanvasProps) {
       ctx.beginPath();
       ctx.moveTo(lastX, lastY);
       ctx.lineTo(coords.x, coords.y);
-      ctx.strokeStyle = "#000";
+      ctx.strokeStyle = props.brushColor;
       ctx.lineWidth = 3;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";

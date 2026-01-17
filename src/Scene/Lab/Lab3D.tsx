@@ -6,6 +6,7 @@ import type { LabActions, LabPaintColor } from "../../Robot/types";
 import { LabTerminal } from "./LabTerminal";
 import { HelpTerminal } from "./HelpTerminal";
 import { LabCanvas } from "./LabCanvas";
+import { CanvasControls } from "./CanvasControls";
 import { LabClock } from "./LabClock";
 
 type Lab3DProps = {
@@ -60,6 +61,7 @@ export function Lab3D(props: Lab3DProps) {
   const [webpageVisible, setWebpageVisible] = createSignal(false);
   const [helpExpanded, setHelpExpanded] = createSignal(false);
   const [canvasVisible, setCanvasVisible] = createSignal(false);
+  const [brushColor, setBrushColor] = createSignal("#000000");
 
   let backWallRef: HTMLDivElement | undefined;
 
@@ -113,7 +115,7 @@ export function Lab3D(props: Lab3DProps) {
               />
             </Show>
             <Show when={canvasVisible()}>
-              <LabCanvas backWallRef={backWallRef} />
+              <LabCanvas backWallRef={backWallRef} brushColor={brushColor()} />
             </Show>
           </div>
 
@@ -145,6 +147,12 @@ export function Lab3D(props: Lab3DProps) {
             onMinimize={() => setHelpExpanded(false)}
             onExpand={() => setHelpExpanded(true)}
           />
+          <Show when={canvasVisible()}>
+            <CanvasControls
+              brushColor={brushColor()}
+              onColorChange={setBrushColor}
+            />
+          </Show>
         </Show>
       </div>
     </RobotProvider>
