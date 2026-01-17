@@ -120,6 +120,28 @@ export function parseLabCommand(
     return { handled: true, response: "Closing help panel." };
   }
 
+  // Canvas commands
+  if (
+    lower.includes("show canvas") ||
+    lower.includes("open canvas") ||
+    lower.includes("draw") ||
+    lower.includes("paint canvas")
+  ) {
+    if (actions.isCanvasVisible()) {
+      return { handled: true, response: "The canvas is already on the wall!" };
+    }
+    actions.showCanvas();
+    return { handled: true, response: "Here's a canvas for you. Draw freely!" };
+  }
+
+  if (lower.includes("hide canvas") || lower.includes("close canvas")) {
+    if (!actions.isCanvasVisible()) {
+      return { handled: true, response: "There's no canvas to hide." };
+    }
+    actions.hideCanvas();
+    return { handled: true, response: "Canvas hidden." };
+  }
+
   return { handled: false, response: "" };
 }
 
@@ -130,6 +152,11 @@ export const labHelpCommands = [
   },
   { command: "play rain", description: "Play rain sounds on the back wall" },
   { command: "stop rain", description: "Stop rain sounds" },
+  {
+    command: "show canvas",
+    description: "Open a drawing canvas on the back wall",
+  },
+  { command: "hide canvas", description: "Hide the drawing canvas" },
   { command: "go to office", description: "Return to the office scene" },
   { command: "help", description: "Show this help panel" },
 ];

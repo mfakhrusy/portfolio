@@ -5,6 +5,7 @@ import { RobotProvider } from "../../Robot/RobotContext";
 import type { LabActions, LabPaintColor } from "../../Robot/types";
 import { LabTerminal } from "./LabTerminal";
 import { HelpTerminal } from "./HelpTerminal";
+import { LabCanvas } from "./LabCanvas";
 import { LabClock } from "./LabClock";
 
 type Lab3DProps = {
@@ -58,6 +59,9 @@ export function Lab3D(props: Lab3DProps) {
   const [paintColor, setPaintColor] = createSignal<LabPaintColor>("blue");
   const [webpageVisible, setWebpageVisible] = createSignal(false);
   const [helpExpanded, setHelpExpanded] = createSignal(false);
+  const [canvasVisible, setCanvasVisible] = createSignal(false);
+
+  let backWallRef: HTMLDivElement | undefined;
 
   const labActions: LabActions = {
     setPaintColor: (color) => setPaintColor(color),
@@ -69,6 +73,9 @@ export function Lab3D(props: Lab3DProps) {
     showHelp: () => setHelpExpanded(true),
     hideHelp: () => setHelpExpanded(false),
     isHelpVisible: () => helpExpanded(),
+    showCanvas: () => setCanvasVisible(true),
+    hideCanvas: () => setCanvasVisible(false),
+    isCanvasVisible: () => canvasVisible(),
   };
 
   const palette = () => colorPalettes[paintColor()];
@@ -93,7 +100,7 @@ export function Lab3D(props: Lab3DProps) {
       >
         <div class="lab-room" classList={{ "lab-room-entering": isEntering() }}>
           {/* Back wall - facing us */}
-          <div class="lab-wall lab-wall-back">
+          <div ref={backWallRef} class="lab-wall lab-wall-back">
             <Show when={webpageVisible()}>
               <iframe
                 class="lab-back-iframe"
@@ -101,6 +108,9 @@ export function Lab3D(props: Lab3DProps) {
                 title="Rain sounds"
                 allow="autoplay; fullscreen"
               />
+            </Show>
+            <Show when={canvasVisible()}>
+              <LabCanvas backWallRef={backWallRef} />
             </Show>
           </div>
 

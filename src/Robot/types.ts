@@ -18,6 +18,9 @@ export type LabActions = {
   showHelp: () => void;
   hideHelp: () => void;
   isHelpVisible: () => boolean;
+  showCanvas: () => void;
+  hideCanvas: () => void;
+  isCanvasVisible: () => boolean;
 };
 
 // Union type for all scene actions
