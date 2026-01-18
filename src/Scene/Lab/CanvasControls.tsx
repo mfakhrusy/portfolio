@@ -77,9 +77,9 @@ export function CanvasControls(props: CanvasControlsProps) {
       title="BRUSH"
       initialPosition={{ x: 30, y: 30 }}
       initialSize={{ width: 220, height: 320 }}
-      minSize={{ width: 180, height: 200 }}
       terminalClass="canvas-controls"
       showMinimizeButton={false}
+      resizable={false}
     >
       {/* Controls */}
       <div class="canvas-controls-body">

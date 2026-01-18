@@ -24,6 +24,7 @@ export type DraggableTerminalProps = {
   fabClass?: string;
   terminalClass?: string;
   showMinimizeButton?: boolean;
+  resizable?: boolean;
 };
 
 export function DraggableTerminal(props: DraggableTerminalProps) {
@@ -165,6 +166,7 @@ export function DraggableTerminal(props: DraggableTerminalProps) {
 
   const isMinimized = () => props.isMinimized?.() ?? false;
   const showMinimize = props.showMinimizeButton ?? true;
+  const resizable = props.resizable ?? true;
 
   return (
     <>
@@ -183,38 +185,40 @@ export function DraggableTerminal(props: DraggableTerminalProps) {
           }}
         >
           {/* Resize handles */}
-          <div
-            class="lab-terminal-resize lab-terminal-resize-n"
-            onMouseDown={handleResizeStart("n")}
-          />
-          <div
-            class="lab-terminal-resize lab-terminal-resize-s"
-            onMouseDown={handleResizeStart("s")}
-          />
-          <div
-            class="lab-terminal-resize lab-terminal-resize-e"
-            onMouseDown={handleResizeStart("e")}
-          />
-          <div
-            class="lab-terminal-resize lab-terminal-resize-w"
-            onMouseDown={handleResizeStart("w")}
-          />
-          <div
-            class="lab-terminal-resize lab-terminal-resize-ne"
-            onMouseDown={handleResizeStart("ne")}
-          />
-          <div
-            class="lab-terminal-resize lab-terminal-resize-nw"
-            onMouseDown={handleResizeStart("nw")}
-          />
-          <div
-            class="lab-terminal-resize lab-terminal-resize-se"
-            onMouseDown={handleResizeStart("se")}
-          />
-          <div
-            class="lab-terminal-resize lab-terminal-resize-sw"
-            onMouseDown={handleResizeStart("sw")}
-          />
+          <Show when={resizable}>
+            <div
+              class="lab-terminal-resize lab-terminal-resize-n"
+              onMouseDown={handleResizeStart("n")}
+            />
+            <div
+              class="lab-terminal-resize lab-terminal-resize-s"
+              onMouseDown={handleResizeStart("s")}
+            />
+            <div
+              class="lab-terminal-resize lab-terminal-resize-e"
+              onMouseDown={handleResizeStart("e")}
+            />
+            <div
+              class="lab-terminal-resize lab-terminal-resize-w"
+              onMouseDown={handleResizeStart("w")}
+            />
+            <div
+              class="lab-terminal-resize lab-terminal-resize-ne"
+              onMouseDown={handleResizeStart("ne")}
+            />
+            <div
+              class="lab-terminal-resize lab-terminal-resize-nw"
+              onMouseDown={handleResizeStart("nw")}
+            />
+            <div
+              class="lab-terminal-resize lab-terminal-resize-se"
+              onMouseDown={handleResizeStart("se")}
+            />
+            <div
+              class="lab-terminal-resize lab-terminal-resize-sw"
+              onMouseDown={handleResizeStart("sw")}
+            />
+          </Show>
 
           {/* Header - draggable */}
           <div class="lab-terminal-header" onMouseDown={handleDragStart}>
