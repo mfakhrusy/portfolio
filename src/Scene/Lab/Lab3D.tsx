@@ -64,7 +64,9 @@ export function Lab3D(props: Lab3DProps) {
   const [helpExpanded, setHelpExpanded] = createSignal(false);
   const [canvasVisible, setCanvasVisible] = createSignal(false);
   const [brushColor, setBrushColor] = createSignal("#000000");
-  const [shaderVisible, setShaderVisible] = createSignal(false);
+  const [shaderMode, setShaderMode] = createSignal<"none" | "back" | "all">(
+    "none",
+  );
 
   let backWallRef: HTMLDivElement | undefined;
 
@@ -84,9 +86,10 @@ export function Lab3D(props: Lab3DProps) {
     },
     hideCanvas: () => setCanvasVisible(false),
     isCanvasVisible: () => canvasVisible(),
-    showShader: () => setShaderVisible(true),
-    hideShader: () => setShaderVisible(false),
-    isShaderVisible: () => shaderVisible(),
+    showShaderBackWall: () => setShaderMode("back"),
+    showShaderAllWalls: () => setShaderMode("all"),
+    hideShader: () => setShaderMode("none"),
+    getShaderMode: () => shaderMode(),
   };
 
   const palette = () => colorPalettes[paintColor()];
@@ -130,7 +133,7 @@ export function Lab3D(props: Lab3DProps) {
                   brushColor={brushColor()}
                 />
               </Show>
-              <Show when={shaderVisible()}>
+              <Show when={shaderMode() !== "none"}>
                 <WaveShader />
               </Show>
             </div>
@@ -139,22 +142,37 @@ export function Lab3D(props: Lab3DProps) {
             <div class="lab-wall lab-wall-front" />
 
             {/* Left wall */}
-            <div class="lab-wall lab-wall-left" />
+            <div class="lab-wall lab-wall-left">
+              <Show when={shaderMode() === "all"}>
+                <WaveShader />
+              </Show>
+            </div>
 
             {/* Right wall */}
             <div class="lab-wall lab-wall-right">
               <div class="lab-clock-wrapper">
                 <LabClock />
               </div>
+              <Show when={shaderMode() === "all"}>
+                <WaveShader />
+              </Show>
             </div>
 
             {/* Floor */}
-            <div class="lab-wall lab-wall-floor" />
+            <div class="lab-wall lab-wall-floor">
+              <Show when={shaderMode() === "all"}>
+                <WaveShader />
+              </Show>
+            </div>
 
             {/* Ceiling */}
-            <div class="lab-wall lab-wall-ceiling" />
+            <div class="lab-wall lab-wall-ceiling">
+              <Show when={shaderMode() === "all"}>
+                <WaveShader />
+              </Show>
+            </div>
 
-            <RobotLab hidden={canvasVisible() || shaderVisible()} />
+            <RobotLab hidden={canvasVisible() || shaderMode() !== "none"} />
           </div>
           <Show when={!isEntering()}>
             <LabTerminal labActions={labActions} handleBack={props.onBack} />

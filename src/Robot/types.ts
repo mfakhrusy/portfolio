@@ -21,9 +21,10 @@ export type LabActions = {
   showCanvas: () => Promise<void>;
   hideCanvas: () => void;
   isCanvasVisible: () => boolean;
-  showShader: () => void;
+  showShaderBackWall: () => void;
+  showShaderAllWalls: () => void;
   hideShader: () => void;
-  isShaderVisible: () => boolean;
+  getShaderMode: () => "none" | "back" | "all";
 };
 
 // Union type for all scene actions

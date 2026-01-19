@@ -148,19 +148,43 @@ export function parseLabCommand(
     return { handled: true, response: "Canvas hidden. I'm back!" };
   }
 
-  // Shader commands
+  // Shader commands - all walls
   if (
-    lower.includes("show wave shader") ||
-    lower.includes("wave shader on back wall")
+    lower.includes("wave shader on all wall") ||
+    lower.includes("show wave shader on all")
   ) {
-    if (actions.isShaderVisible()) {
-      return { handled: true, response: "The wave shader is already running!" };
+    if (actions.getShaderMode() === "all") {
+      return {
+        handled: true,
+        response: "The wave shader is already running on all walls!",
+      };
     }
     return {
       handled: true,
       response: "Oops, let me hide first...",
       followUp: async () => {
-        actions.showShader();
+        actions.showShaderAllWalls();
+        return "I'm hidden now. Wave shader activated on all walls... immerse yourself!";
+      },
+    };
+  }
+
+  // Shader commands - back wall only
+  if (
+    lower.includes("wave shader on back wall") ||
+    lower.includes("show wave shader on back")
+  ) {
+    if (actions.getShaderMode() === "back") {
+      return {
+        handled: true,
+        response: "The wave shader is already running on the back wall!",
+      };
+    }
+    return {
+      handled: true,
+      response: "Oops, let me hide first...",
+      followUp: async () => {
+        actions.showShaderBackWall();
         return "I'm hidden now. Wave shader activated on the back wall... watch the waves flow!";
       },
     };
@@ -170,7 +194,7 @@ export function parseLabCommand(
     lower.includes("hide wave shader") ||
     lower.includes("stop wave shader")
   ) {
-    if (!actions.isShaderVisible()) {
+    if (actions.getShaderMode() === "none") {
       return { handled: true, response: "No shader is running." };
     }
     actions.hideShader();
@@ -192,7 +216,14 @@ export const labHelpCommands = [
     description: "Open a drawing canvas on the back wall",
   },
   { command: "hide canvas", description: "Hide the drawing canvas" },
-  { command: "show wave shader", description: "Show wave shader on back wall" },
+  {
+    command: "show wave shader on back wall",
+    description: "Show wave shader on back wall",
+  },
+  {
+    command: "show wave shader on all walls",
+    description: "Show wave shader on all walls",
+  },
   { command: "hide wave shader", description: "Hide the wave shader" },
   { command: "go to office", description: "Return to the office scene" },
   { command: "help", description: "Show this help panel" },
