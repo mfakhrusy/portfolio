@@ -3,15 +3,12 @@ import "./Lab3D.css";
 import { RobotLab } from "../../Robot/RobotLab";
 import { RobotProvider } from "../../Robot/RobotContext";
 import type { LabActions, LabPaintColor } from "../../Robot/types";
-import { LabTerminal } from "./LabTerminal";
-import { HelpTerminal } from "./HelpTerminal";
 import { LabCanvas } from "./LabCanvas";
-import { CanvasControls } from "./CanvasControls";
 import { LabClock } from "./LabClock";
 import { TerminalInteractionProvider } from "./TerminalInteractionContext";
-import { WaveShader, defaultShaderConfig } from "./WaveShader";
-import type { ShaderConfig } from "./WaveShader";
-import { ShaderControls } from "./ShaderControls";
+import { WaveShader, defaultWaveShaderConfig } from "./WaveShader";
+import { LabTerminals } from "./LabTerminals";
+import type { WaveShaderConfig } from "./types";
 
 type Lab3DProps = {
   onBack?: () => void;
@@ -69,8 +66,9 @@ export function Lab3D(props: Lab3DProps) {
   const [shaderMode, setShaderMode] = createSignal<"none" | "back" | "all">(
     "none",
   );
-  const [shaderConfig, setShaderConfig] =
-    createSignal<ShaderConfig>(defaultShaderConfig);
+  const [shaderConfig, setWaveShaderConfig] = createSignal<WaveShaderConfig>(
+    defaultWaveShaderConfig,
+  );
 
   let backWallRef: HTMLDivElement | undefined;
 
@@ -179,24 +177,18 @@ export function Lab3D(props: Lab3DProps) {
             <RobotLab hidden={canvasVisible() || shaderMode() !== "none"} />
           </div>
           <Show when={!isEntering()}>
-            <LabTerminal labActions={labActions} handleBack={props.onBack} />
-            <HelpTerminal
-              expanded={helpExpanded()}
-              onMinimize={() => setHelpExpanded(false)}
-              onExpand={() => setHelpExpanded(true)}
+            <LabTerminals
+              labActions={labActions}
+              onBack={props.onBack}
+              helpExpanded={helpExpanded()}
+              setHelpExpanded={setHelpExpanded}
+              brushColor={brushColor}
+              setBrushColor={setBrushColor}
+              canvasVisible={canvasVisible}
+              shaderMode={shaderMode}
+              shaderConfig={shaderConfig}
+              setWaveShaderConfig={setWaveShaderConfig}
             />
-            <Show when={canvasVisible()}>
-              <CanvasControls
-                brushColor={brushColor()}
-                onColorChange={setBrushColor}
-              />
-            </Show>
-            <Show when={shaderMode() !== "none"}>
-              <ShaderControls
-                initialConfig={shaderConfig()}
-                onConfigChange={setShaderConfig}
-              />
-            </Show>
           </Show>
         </div>
       </RobotProvider>

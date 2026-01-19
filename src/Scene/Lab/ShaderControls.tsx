@@ -1,12 +1,12 @@
 import { createSignal } from "solid-js";
 import { DraggableTerminal } from "./DraggableTerminal";
 import { ColorPicker, hslToRgbNormalized } from "./ColorPicker";
-import type { ShaderConfig } from "./WaveShader";
 import "./ShaderControls.css";
+import type { WaveShaderConfig } from "./types";
 
 type ShaderControlsProps = {
-  onConfigChange: (config: ShaderConfig) => void;
-  initialConfig: ShaderConfig;
+  onConfigChange: (config: WaveShaderConfig) => void;
+  initialConfig: WaveShaderConfig;
 };
 
 export function ShaderControls(props: ShaderControlsProps) {

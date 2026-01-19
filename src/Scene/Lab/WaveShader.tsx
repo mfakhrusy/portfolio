@@ -1,5 +1,6 @@
 import { onMount, onCleanup } from "solid-js";
 import "./WaveShader.css";
+import type { WaveShaderConfig } from "./types";
 
 const vertexShaderSource = `
   attribute vec2 a_position;
@@ -110,19 +111,11 @@ function createProgram(
   return program;
 }
 
-export type ShaderConfig = {
-  color: [number, number, number];
-  intensity: number;
-  speed: number;
-  waveCount: number;
-  frequency: number;
-};
-
 type WaveShaderProps = {
-  config: ShaderConfig;
+  config: WaveShaderConfig;
 };
 
-export const defaultShaderConfig: ShaderConfig = {
+export const defaultWaveShaderConfig: WaveShaderConfig = {
   color: [0.22, 0.74, 0.97],
   intensity: 1.0,
   speed: 1.0,
