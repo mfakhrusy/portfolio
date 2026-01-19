@@ -17,11 +17,11 @@
 .shader-controls-section-title {
   font-size: 10px;
   font-weight: 600;
-  color: rgba(56, 189, 248, 0.7);
+  color: var(--lab-accent-70);
   text-transform: uppercase;
   letter-spacing: 1px;
   padding-bottom: 4px;
-  border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+  border-bottom: var(--lab-border-medium);
 }
 
 .shader-controls-slider-label {
@@ -31,14 +31,14 @@
   gap: 8px;
   font-size: 10px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--lab-text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .shader-controls-value {
-  font-family: "SF Mono", "Fira Code", monospace;
-  color: rgba(56, 189, 248, 0.8);
+  font-family: var(--lab-font-mono);
+  color: var(--lab-accent-80);
   text-align: right;
 }
 
@@ -60,7 +60,7 @@
   height: 12px;
   border-radius: 50%;
   background: #fff;
-  border: 1px solid rgba(56, 189, 248, 0.6);
+  border: 1px solid var(--lab-accent-60);
   cursor: pointer;
 }
 
@@ -69,6 +69,6 @@
   height: 12px;
   border-radius: 50%;
   background: #fff;
-  border: 1px solid rgba(56, 189, 248, 0.6);
+  border: 1px solid var(--lab-accent-60);
   cursor: pointer;
 }

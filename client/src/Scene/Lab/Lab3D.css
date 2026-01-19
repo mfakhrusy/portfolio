@@ -185,7 +185,7 @@
   inset: 0;
   background: radial-gradient(
     ellipse at center,
-    rgba(56, 189, 248, 0.03) 0%,
+    var(--lab-accent-03) 0%,
     transparent 70%
   );
   pointer-events: none;
@@ -197,21 +197,21 @@
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%) translateZ(100px);
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  color: rgba(56, 189, 248, 0.8);
+  background: var(--lab-accent-10);
+  border: var(--lab-border-strong);
+  color: var(--lab-accent-80);
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  transition: var(--lab-transition-default);
   z-index: 100;
 }
 
 .lab-back-button:hover {
-  background: rgba(56, 189, 248, 0.2);
-  border-color: rgba(56, 189, 248, 0.5);
-  color: #38bdf8;
+  background: var(--lab-accent-20);
+  border-color: var(--lab-accent-50);
+  color: var(--lab-accent);
 }
 
 /* Clock on right wall */

@@ -29,7 +29,7 @@ export function LabClock() {
           <span class="lab-clock-colon">:</span>
           <span class="lab-clock-segment">{t().m}</span>
           <span class="lab-clock-colon">:</span>
-          <span class="lab-clock-segment lab-clock-seconds">{t().s}</span>
+          <span class="lab-clock-segment">{t().s}</span>
         </div>
         <div class="lab-clock-label">TIME</div>
         <div class="lab-clock-scanline" />

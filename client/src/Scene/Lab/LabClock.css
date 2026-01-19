@@ -19,13 +19,17 @@
 .lab-clock-front {
   width: var(--clock-width);
   height: var(--clock-height);
-  background: linear-gradient(180deg, #0a0a12 0%, #12121a 100%);
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: linear-gradient(
+    180deg,
+    var(--lab-clock-bg-dark) 0%,
+    var(--lab-clock-bg-light) 100%
+  );
+  border: 1px solid var(--lab-accent-30);
   border-radius: 4px;
   padding: 10px 14px;
   box-sizing: border-box;
   box-shadow:
-    0 0 20px rgba(56, 189, 248, 0.1),
+    0 0 20px var(--lab-accent-10),
     inset 0 0 30px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   transform: translateZ(calc(var(--clock-depth) / 2));
@@ -35,7 +39,7 @@
 .lab-clock-back {
   width: var(--clock-width);
   height: var(--clock-height);
-  background: #050508;
+  background: var(--lab-bg-darkest);
   border-radius: 4px;
   transform: translateZ(calc(var(--clock-depth) / -2)) rotateY(180deg);
 }
@@ -44,8 +48,12 @@
 .lab-clock-top {
   width: var(--clock-width);
   height: var(--clock-depth);
-  background: linear-gradient(180deg, #15151f 0%, #0a0a12 100%);
-  border: 1px solid rgba(56, 189, 248, 0.15);
+  background: linear-gradient(
+    180deg,
+    var(--lab-clock-bg-top) 0%,
+    var(--lab-clock-bg-dark) 100%
+  );
+  border: 1px solid var(--lab-accent-15);
   border-bottom: none;
   border-radius: 4px 4px 0 0;
   transform: rotateX(90deg) translateZ(calc(var(--clock-depth) / 2));
@@ -57,8 +65,12 @@
   width: var(--clock-width);
   height: var(--clock-depth);
   top: calc(var(--clock-height) - var(--clock-depth));
-  background: linear-gradient(0deg, #08080c 0%, #0a0a12 100%);
-  border: 1px solid rgba(56, 189, 248, 0.1);
+  background: linear-gradient(
+    0deg,
+    var(--lab-bg-darker) 0%,
+    var(--lab-clock-bg-dark) 100%
+  );
+  border: 1px solid var(--lab-accent-10);
   border-top: none;
   border-radius: 0 0 4px 4px;
   transform: rotateX(-90deg) translateZ(calc(var(--clock-depth) / 2));
@@ -69,8 +81,12 @@
 .lab-clock-left {
   width: var(--clock-depth);
   height: var(--clock-height);
-  background: linear-gradient(90deg, #08080c 0%, #0c0c14 100%);
-  border: 1px solid rgba(56, 189, 248, 0.1);
+  background: linear-gradient(
+    90deg,
+    var(--lab-bg-darker) 0%,
+    var(--lab-clock-bg-side) 100%
+  );
+  border: 1px solid var(--lab-accent-10);
   border-right: none;
   border-radius: 4px 0 0 4px;
   transform: rotateY(-90deg) translateZ(calc(var(--clock-depth) / 2));
@@ -82,8 +98,12 @@
   width: var(--clock-depth);
   height: var(--clock-height);
   left: calc(var(--clock-width) - var(--clock-depth));
-  background: linear-gradient(-90deg, #08080c 0%, #0c0c14 100%);
-  border: 1px solid rgba(56, 189, 248, 0.1);
+  background: linear-gradient(
+    -90deg,
+    var(--lab-bg-darker) 0%,
+    var(--lab-clock-bg-side) 100%
+  );
+  border: 1px solid var(--lab-accent-10);
   border-left: none;
   border-radius: 0 4px 4px 0;
   transform: rotateY(90deg) translateZ(calc(var(--clock-depth) / 2));
@@ -99,15 +119,15 @@
   font-family: "Courier New", monospace;
   font-size: 24px;
   font-weight: bold;
-  color: #38bdf8;
+  color: var(--color-accent);
   text-shadow:
-    0 0 10px rgba(56, 189, 248, 0.8),
-    0 0 20px rgba(56, 189, 248, 0.4);
+    0 0 10px var(--lab-accent-80),
+    0 0 20px var(--lab-accent-40);
   letter-spacing: 2px;
 }
 
 .lab-clock-segment {
-  background: rgba(56, 189, 248, 0.05);
+  background: var(--lab-accent-05);
   padding: 2px 4px;
   border-radius: 2px;
   min-width: 28px;
@@ -129,19 +149,11 @@
   }
 }
 
-.lab-clock-seconds {
-  font-size: 16px;
-  color: rgba(56, 189, 248, 0.6);
-  text-shadow:
-    0 0 8px rgba(56, 189, 248, 0.5),
-    0 0 15px rgba(56, 189, 248, 0.2);
-}
-
 .lab-clock-label {
   text-align: center;
   font-family: "Courier New", monospace;
   font-size: 7px;
-  color: rgba(56, 189, 248, 0.4);
+  color: var(--lab-accent-40);
   letter-spacing: 3px;
   margin-top: 4px;
   text-transform: uppercase;
@@ -170,7 +182,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(56, 189, 248, 0.05),
+    var(--lab-accent-05),
     transparent
   );
   animation: shimmer 3s infinite;

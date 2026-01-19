@@ -1,0 +1,192 @@
+/*
+ * Lab Theme CSS Variables
+ * Centralized color theming for all Lab UI components
+ * 
+ * Usage: These variables can be overridden to change the entire Lab theme.
+ * Future: The "paint" command could dynamically update these values.
+ */
+
+:root {
+  /* ========================================
+   * PRIMARY ACCENT COLOR (Cyan/Sky Blue)
+   * Used for: borders, titles, highlights, interactive elements
+   * ======================================== */
+  --lab-accent-hue: 199;
+  --lab-accent-sat: 92%;
+  --lab-accent-lit: 60%;
+  --lab-accent: hsl(
+    var(--lab-accent-hue),
+    var(--lab-accent-sat),
+    var(--lab-accent-lit)
+  );
+  --lab-accent-rgb: 56, 189, 248;
+
+  /* Accent opacity variants */
+  --lab-accent-95: rgba(var(--lab-accent-rgb), 0.95);
+  --lab-accent-90: rgba(var(--lab-accent-rgb), 0.9);
+  --lab-accent-80: rgba(var(--lab-accent-rgb), 0.8);
+  --lab-accent-70: rgba(var(--lab-accent-rgb), 0.7);
+  --lab-accent-60: rgba(var(--lab-accent-rgb), 0.6);
+  --lab-accent-50: rgba(var(--lab-accent-rgb), 0.5);
+  --lab-accent-40: rgba(var(--lab-accent-rgb), 0.4);
+  --lab-accent-30: rgba(var(--lab-accent-rgb), 0.3);
+  --lab-accent-25: rgba(var(--lab-accent-rgb), 0.25);
+  --lab-accent-20: rgba(var(--lab-accent-rgb), 0.2);
+  --lab-accent-15: rgba(var(--lab-accent-rgb), 0.15);
+  --lab-accent-10: rgba(var(--lab-accent-rgb), 0.1);
+  --lab-accent-08: rgba(var(--lab-accent-rgb), 0.08);
+  --lab-accent-06: rgba(var(--lab-accent-rgb), 0.06);
+  --lab-accent-05: rgba(var(--lab-accent-rgb), 0.05);
+  --lab-accent-03: rgba(var(--lab-accent-rgb), 0.03);
+
+  /* ========================================
+   * SUCCESS COLOR (Green)
+   * Used for: user input, success states, prompts
+   * ======================================== */
+  --lab-success-hue: 142;
+  --lab-success-sat: 71%;
+  --lab-success-lit: 61%;
+  --lab-success: hsl(
+    var(--lab-success-hue),
+    var(--lab-success-sat),
+    var(--lab-success-lit)
+  );
+  --lab-success-rgb: 74, 222, 128;
+
+  /* Success opacity variants */
+  --lab-success-95: rgba(var(--lab-success-rgb), 0.95);
+  --lab-success-90: rgba(var(--lab-success-rgb), 0.9);
+  --lab-success-80: rgba(var(--lab-success-rgb), 0.8);
+  --lab-success-60: rgba(var(--lab-success-rgb), 0.6);
+  --lab-success-50: rgba(var(--lab-success-rgb), 0.5);
+  --lab-success-30: rgba(var(--lab-success-rgb), 0.3);
+  --lab-success-10: rgba(var(--lab-success-rgb), 0.1);
+
+  /* ========================================
+   * WARNING COLOR (Amber/Yellow)
+   * Used for: system messages, warnings, section headers
+   * ======================================== */
+  --lab-warning-hue: 43;
+  --lab-warning-sat: 96%;
+  --lab-warning-lit: 56%;
+  --lab-warning: hsl(
+    var(--lab-warning-hue),
+    var(--lab-warning-sat),
+    var(--lab-warning-lit)
+  );
+  --lab-warning-rgb: 251, 191, 36;
+
+  /* Warning opacity variants */
+  --lab-warning-80: rgba(var(--lab-warning-rgb), 0.8);
+  --lab-warning-70: rgba(var(--lab-warning-rgb), 0.7);
+  --lab-warning-50: rgba(var(--lab-warning-rgb), 0.5);
+
+  /* ========================================
+   * ERROR COLOR (Red)
+   * Used for: error states, validation errors
+   * ======================================== */
+  --lab-error-hue: 0;
+  --lab-error-sat: 91%;
+  --lab-error-lit: 71%;
+  --lab-error: hsl(
+    var(--lab-error-hue),
+    var(--lab-error-sat),
+    var(--lab-error-lit)
+  );
+  --lab-error-rgb: 248, 113, 113;
+
+  /* Error opacity variants */
+  --lab-error-90: rgba(var(--lab-error-rgb), 0.9);
+  --lab-error-80: rgba(var(--lab-error-rgb), 0.8);
+  --lab-error-30: rgba(var(--lab-error-rgb), 0.3);
+  --lab-error-10: rgba(var(--lab-error-rgb), 0.1);
+
+  /* ========================================
+   * MUTED COLOR (Gray-Blue)
+   * Used for: placeholders, disabled states, secondary text
+   * ======================================== */
+  --lab-muted-rgb: 100, 120, 150;
+
+  /* Muted opacity variants */
+  --lab-muted-60: rgba(var(--lab-muted-rgb), 0.6);
+  --lab-muted-50: rgba(var(--lab-muted-rgb), 0.5);
+
+  /* ========================================
+   * TEXT COLORS
+   * ======================================== */
+  --lab-text-primary: rgba(255, 255, 255, 0.95);
+  --lab-text-secondary: rgba(255, 255, 255, 0.85);
+  --lab-text-tertiary: rgba(255, 255, 255, 0.6);
+  --lab-text-muted: rgba(100, 120, 150, 0.6);
+
+  /* ========================================
+   * BACKGROUND COLORS
+   * Dark theme backgrounds from darkest to lightest
+   * ======================================== */
+  --lab-bg-darkest: #050508;
+  --lab-bg-darker: #08080c;
+  --lab-bg-dark: #0a0a0a;
+  --lab-bg-base: #0a0a12;
+  --lab-bg-elevated: #0c0c14;
+  --lab-bg-surface: #0f0f1a;
+  --lab-bg-panel: #12121a;
+
+  /* Room/3D specific backgrounds */
+  --lab-room-dark: #0a0a0a;
+  --lab-room-primary: #1a1a2e;
+  --lab-room-secondary: #16213e;
+  --lab-room-tertiary: #2a2a4e;
+
+  /* Terminal panel backgrounds */
+  --lab-terminal-bg-start: rgba(8, 12, 24, 0.92);
+  --lab-terminal-bg-end: rgba(4, 8, 16, 0.96);
+  --lab-terminal-input-bg: rgba(0, 0, 0, 0.3);
+  --lab-terminal-field-bg: rgba(0, 0, 0, 0.4);
+
+  /* ========================================
+   * GLOW & SHADOW EFFECTS
+   * ======================================== */
+  --lab-glow-sm: 0 0 8px var(--lab-accent-50);
+  --lab-glow-md: 0 0 20px var(--lab-accent-15);
+  --lab-glow-lg: 0 0 40px var(--lab-accent-10);
+  --lab-glow-success: 0 0 8px var(--lab-success-50);
+
+  --lab-shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --lab-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.4);
+
+  /* ========================================
+   * CLOCK SPECIFIC (3D element)
+   * ======================================== */
+  --lab-clock-bg-dark: #0a0a12;
+  --lab-clock-bg-light: #12121a;
+  --lab-clock-bg-top: #15151f;
+  --lab-clock-bg-side: #0c0c14;
+
+  /* ========================================
+   * TYPOGRAPHY
+   * ======================================== */
+  --lab-font-mono: "SF Mono", "Fira Code", "Consolas", monospace;
+
+  /* ========================================
+   * BORDERS & DIVIDERS
+   * ======================================== */
+  --lab-border-subtle: 1px solid var(--lab-accent-08);
+  --lab-border-light: 1px solid var(--lab-accent-10);
+  --lab-border-medium: 1px solid var(--lab-accent-15);
+  --lab-border-default: 1px solid var(--lab-accent-25);
+  --lab-border-strong: 1px solid var(--lab-accent-30);
+  --lab-border-accent: 1px solid var(--lab-accent-50);
+
+  /* ========================================
+   * SCROLLBAR
+   * ======================================== */
+  --lab-scrollbar-thumb: var(--lab-accent-30);
+  --lab-scrollbar-track: transparent;
+
+  /* ========================================
+   * TRANSITIONS
+   * ======================================== */
+  --lab-transition-fast: 0.15s ease;
+  --lab-transition-default: 0.2s ease;
+  --lab-transition-slow: 0.5s ease;
+}

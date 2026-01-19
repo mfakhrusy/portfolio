@@ -8,18 +8,18 @@
 
   background: linear-gradient(
     180deg,
-    rgba(8, 12, 24, 0.92) 0%,
-    rgba(4, 8, 16, 0.96) 100%
+    var(--lab-terminal-bg-start) 0%,
+    var(--lab-terminal-bg-end) 100%
   );
-  border: 1px solid rgba(56, 189, 248, 0.25);
+  border: 1px solid var(--lab-accent-25);
   border-radius: 6px;
   backdrop-filter: blur(16px);
   box-shadow:
-    0 0 40px rgba(56, 189, 248, 0.1),
-    0 20px 60px rgba(0, 0, 0, 0.4),
+    var(--lab-glow-lg),
+    var(--lab-shadow-lg),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-family: var(--lab-font-mono);
   overflow: hidden;
 
   animation: draggableTerminalFadeIn 0.5s ease-out forwards;
@@ -121,8 +121,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 16px;
-  background: rgba(56, 189, 248, 0.06);
-  border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+  background: var(--lab-accent-06);
+  border-bottom: 1px solid var(--lab-accent-15);
   cursor: grab;
   flex-shrink: 0;
 }
@@ -135,7 +135,7 @@
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 2px;
-  color: rgba(56, 189, 248, 0.8);
+  color: var(--lab-accent-80);
   text-transform: uppercase;
 }
 
@@ -147,22 +147,22 @@
   width: 24px;
   height: 24px;
   padding: 0;
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: var(--lab-accent-10);
+  border: 1px solid var(--lab-accent-30);
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--lab-transition-default);
 }
 
 .draggable-terminal-minimize:hover {
-  background: rgba(56, 189, 248, 0.2);
-  border-color: rgba(56, 189, 248, 0.5);
+  background: var(--lab-accent-20);
+  border-color: var(--lab-accent-50);
 }
 
 .draggable-terminal-minimize-icon {
   width: 10px;
   height: 2px;
-  background: rgba(56, 189, 248, 0.8);
+  background: var(--lab-accent-80);
   border-radius: 1px;
 }
 
@@ -180,34 +180,32 @@
 
   background: linear-gradient(
     180deg,
-    rgba(8, 12, 24, 0.92) 0%,
-    rgba(4, 8, 16, 0.96) 100%
+    var(--lab-terminal-bg-start) 0%,
+    var(--lab-terminal-bg-end) 100%
   );
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  border: 1px solid var(--lab-accent-30);
   border-radius: 8px;
   backdrop-filter: blur(16px);
-  box-shadow:
-    0 0 20px rgba(56, 189, 248, 0.15),
-    0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--lab-glow-md), var(--lab-shadow-sm);
 
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--lab-transition-default);
   animation: draggableTerminalFabFadeIn 0.3s ease-out forwards;
 }
 
 .draggable-terminal-fab:hover {
-  border-color: rgba(56, 189, 248, 0.5);
+  border-color: var(--lab-accent-50);
   box-shadow:
-    0 0 30px rgba(56, 189, 248, 0.25),
-    0 8px 24px rgba(0, 0, 0, 0.4);
+    0 0 30px var(--lab-accent-25),
+    var(--lab-shadow-sm);
   transform: scale(1.05);
 }
 
 .draggable-terminal-fab-icon {
-  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-family: var(--lab-font-mono);
   font-size: 16px;
   font-weight: 600;
-  color: rgba(56, 189, 248, 0.9);
+  color: var(--lab-accent-90);
 }
 
 /* FAB position variants */

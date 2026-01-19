@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: column;
   padding: 16px;
-  border-right: 1px solid rgba(56, 189, 248, 0.15);
+  border-right: 1px solid var(--lab-accent-15);
   overflow-y: auto;
 }
 
@@ -37,11 +37,11 @@
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 2px;
-  color: rgba(251, 191, 36, 0.7);
+  color: var(--lab-warning-70);
   text-transform: uppercase;
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+  border-bottom: 1px solid var(--lab-accent-10);
 }
 
 .guest-book-field {
@@ -55,19 +55,19 @@
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1px;
-  color: rgba(56, 189, 248, 0.8);
+  color: var(--lab-accent-80);
   text-transform: uppercase;
   margin-bottom: 8px;
 }
 
 .guest-book-label-icon {
-  color: rgba(74, 222, 128, 0.8);
+  color: var(--lab-success-80);
 }
 
 .guest-book-label-optional {
   font-weight: 400;
   font-size: 10px;
-  color: rgba(100, 120, 150, 0.6);
+  color: var(--lab-muted-60);
   text-transform: lowercase;
   letter-spacing: 0;
 }
@@ -75,11 +75,11 @@
 .guest-book-input {
   width: 100%;
   padding: 10px 12px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: var(--lab-terminal-field-bg);
+  border: 1px solid var(--lab-accent-20);
   border-radius: 4px;
-  color: rgba(255, 255, 255, 0.95);
-  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  color: var(--lab-text-primary);
+  font-family: var(--lab-font-mono);
   font-size: 13px;
   outline: none;
   transition: all 0.2s ease;
@@ -87,14 +87,14 @@
 }
 
 .guest-book-input:focus {
-  border-color: rgba(56, 189, 248, 0.5);
+  border-color: var(--lab-accent-50);
   box-shadow:
-    0 0 0 1px rgba(56, 189, 248, 0.2),
-    0 0 20px rgba(56, 189, 248, 0.1);
+    0 0 0 1px var(--lab-accent-20),
+    0 0 20px var(--lab-accent-10);
 }
 
 .guest-book-input::placeholder {
-  color: rgba(100, 120, 150, 0.5);
+  color: var(--lab-muted-50);
 }
 
 .guest-book-textarea {
@@ -105,17 +105,17 @@
 
 .guest-book-char-count {
   font-size: 10px;
-  color: rgba(100, 120, 150, 0.6);
+  color: var(--lab-muted-60);
   text-align: right;
   margin-top: 4px;
 }
 
 .guest-book-char-count-warning {
-  color: rgba(251, 191, 36, 0.8);
+  color: var(--lab-warning-80);
 }
 
 .guest-book-char-count-error {
-  color: rgba(248, 113, 113, 0.8);
+  color: var(--lab-error-80);
 }
 
 .guest-book-submit {
@@ -128,13 +128,13 @@
   margin-top: auto;
   background: linear-gradient(
     180deg,
-    rgba(56, 189, 248, 0.15) 0%,
-    rgba(56, 189, 248, 0.08) 100%
+    var(--lab-accent-15) 0%,
+    var(--lab-accent-08) 100%
   );
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  border: 1px solid var(--lab-accent-30);
   border-radius: 4px;
-  color: rgba(56, 189, 248, 0.95);
-  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  color: var(--lab-accent-95);
+  font-family: var(--lab-font-mono);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 2px;
@@ -146,11 +146,11 @@
 .guest-book-submit:hover:not(:disabled) {
   background: linear-gradient(
     180deg,
-    rgba(56, 189, 248, 0.25) 0%,
-    rgba(56, 189, 248, 0.15) 100%
+    var(--lab-accent-25) 0%,
+    var(--lab-accent-15) 100%
   );
-  border-color: rgba(56, 189, 248, 0.5);
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+  border-color: var(--lab-accent-50);
+  box-shadow: 0 0 20px var(--lab-accent-20);
 }
 
 .guest-book-submit:disabled {
@@ -174,11 +174,11 @@
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 2px;
-  color: rgba(251, 191, 36, 0.7);
+  color: var(--lab-warning-70);
   text-transform: uppercase;
   padding: 16px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+  border-bottom: 1px solid var(--lab-accent-10);
   flex-shrink: 0;
 }
 
@@ -187,7 +187,7 @@
   overflow-y: auto;
   padding: 12px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(56, 189, 248, 0.3) transparent;
+  scrollbar-color: var(--lab-scrollbar-thumb) transparent;
 }
 
 .guest-book-list::-webkit-scrollbar {
@@ -199,22 +199,22 @@
 }
 
 .guest-book-list::-webkit-scrollbar-thumb {
-  background: rgba(56, 189, 248, 0.3);
+  background: var(--lab-scrollbar-thumb);
   border-radius: 3px;
 }
 
 .guest-book-entry {
   padding: 12px;
   margin-bottom: 8px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(56, 189, 248, 0.1);
+  background: var(--lab-terminal-input-bg);
+  border: 1px solid var(--lab-accent-10);
   border-radius: 4px;
   transition: all 0.2s ease;
 }
 
 .guest-book-entry:hover {
-  border-color: rgba(56, 189, 248, 0.25);
-  background: rgba(0, 0, 0, 0.4);
+  border-color: var(--lab-accent-25);
+  background: var(--lab-terminal-field-bg);
 }
 
 .guest-book-entry-header {
@@ -227,12 +227,12 @@
 .guest-book-entry-name {
   font-size: 12px;
   font-weight: 600;
-  color: rgba(74, 222, 128, 0.95);
+  color: var(--lab-success-95);
 }
 
 .guest-book-entry-name::before {
   content: "@";
-  color: rgba(74, 222, 128, 0.6);
+  color: var(--lab-success-60);
 }
 
 .guest-book-entry-link {
@@ -242,7 +242,7 @@
 
 .guest-book-entry-link:hover {
   text-decoration: underline;
-  text-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+  text-shadow: var(--lab-glow-success);
 }
 
 .guest-book-entry-link::after {
@@ -253,24 +253,24 @@
 
 .guest-book-entry-time {
   font-size: 10px;
-  color: rgba(100, 120, 150, 0.6);
+  color: var(--lab-muted-60);
 }
 
 .guest-book-entry-message {
   font-size: 13px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--lab-text-secondary);
   word-break: break-word;
 }
 
 .guest-book-entry-message::before {
   content: '"';
-  color: rgba(56, 189, 248, 0.5);
+  color: var(--lab-accent-50);
 }
 
 .guest-book-entry-message::after {
   content: '"';
-  color: rgba(56, 189, 248, 0.5);
+  color: var(--lab-accent-50);
 }
 
 /* Empty state */
@@ -292,7 +292,7 @@
 
 .guest-book-empty-text {
   font-size: 12px;
-  color: rgba(100, 120, 150, 0.6);
+  color: var(--lab-muted-60);
 }
 
 /* Loading state */
@@ -301,7 +301,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: rgba(56, 189, 248, 0.6);
+  color: var(--lab-accent-60);
   font-size: 12px;
 }
 
@@ -337,13 +337,13 @@
 }
 
 .guest-book-status-success {
-  background: rgba(74, 222, 128, 0.1);
-  border: 1px solid rgba(74, 222, 128, 0.3);
-  color: rgba(74, 222, 128, 0.9);
+  background: var(--lab-success-10);
+  border: 1px solid var(--lab-success-30);
+  color: var(--lab-success-90);
 }
 
 .guest-book-status-error {
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.3);
-  color: rgba(248, 113, 113, 0.9);
+  background: var(--lab-error-10);
+  border: 1px solid var(--lab-error-30);
+  color: var(--lab-error-90);
 }

@@ -3,7 +3,7 @@
   flex: 1;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(56, 189, 248, 0.3) transparent;
+  scrollbar-color: var(--lab-scrollbar-thumb) transparent;
 }
 
 .lab-terminal-output::-webkit-scrollbar {
@@ -15,7 +15,7 @@
 }
 
 .lab-terminal-output::-webkit-scrollbar-thumb {
-  background: rgba(56, 189, 248, 0.3);
+  background: var(--lab-scrollbar-thumb);
   border-radius: 3px;
 }
 
@@ -38,31 +38,31 @@
 
 /* Robot messages */
 .lab-terminal-line-robot {
-  color: rgba(56, 189, 248, 0.95);
+  color: var(--lab-accent-95);
 }
 
 .lab-terminal-line-robot .lab-terminal-prefix {
-  color: rgba(56, 189, 248, 0.6);
+  color: var(--lab-accent-60);
 }
 
 /* User messages */
 .lab-terminal-line-user {
-  color: rgba(74, 222, 128, 0.95);
+  color: var(--lab-success-95);
 }
 
 .lab-terminal-line-user .lab-terminal-prefix {
-  color: rgba(74, 222, 128, 0.6);
+  color: var(--lab-success-60);
 }
 
 /* System messages */
 .lab-terminal-line-system {
-  color: rgba(251, 191, 36, 0.7);
+  color: var(--lab-warning-70);
   font-size: 11px;
   letter-spacing: 1px;
 }
 
 .lab-terminal-line-system .lab-terminal-prefix {
-  color: rgba(251, 191, 36, 0.5);
+  color: var(--lab-warning-50);
 }
 
 /* Input area */
@@ -70,14 +70,14 @@
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.3);
-  border-top: 1px solid rgba(56, 189, 248, 0.1);
+  background: var(--lab-terminal-input-bg);
+  border-top: 1px solid var(--lab-accent-10);
   gap: 8px;
   flex-shrink: 0;
 }
 
 .lab-terminal-prompt {
-  color: rgba(74, 222, 128, 0.8);
+  color: var(--lab-success-80);
   font-weight: 600;
   font-size: 14px;
 }
@@ -87,14 +87,14 @@
   background: transparent;
   border: none;
   outline: none;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--lab-text-primary);
   font-family: inherit;
   font-size: 14px;
-  caret-color: rgba(56, 189, 248, 0.8);
+  caret-color: var(--lab-accent-80);
 }
 
 .lab-terminal-input::placeholder {
-  color: rgba(100, 120, 150, 0.5);
+  color: var(--lab-muted-50);
 }
 
 .lab-terminal-input:disabled {

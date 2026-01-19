@@ -1,4 +1,5 @@
 import { createSignal, onMount, Show } from "solid-js";
+import "./LabTheme.css";
 import "./Lab3D.css";
 import { RobotLab } from "../../Robot/RobotLab";
 import { RobotProvider } from "../../Robot/RobotContext";
