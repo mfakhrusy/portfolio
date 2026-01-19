@@ -148,7 +148,7 @@ export function parseLabCommand(
     return { handled: true, response: "Canvas hidden. I'm back!" };
   }
 
-  // Shader commands - all walls
+  // Shader commands - all walls (with confirmation)
   if (
     lower.includes("wave shader on all wall") ||
     lower.includes("show wave shader on all")
@@ -161,10 +161,14 @@ export function parseLabCommand(
     }
     return {
       handled: true,
-      response: "Oops, let me hide first...",
-      followUp: async () => {
-        actions.showShaderAllWalls();
-        return "I'm hidden now. Wave shader activated on all walls... immerse yourself!";
+      response: "Hmm, waves on all walls...",
+      confirmation: {
+        prompt: "Are you sure? It might make you a bit dizzy!",
+        onConfirm: async () => {
+          actions.showShaderAllWalls();
+          return "You've been warned! Let me get out of here... Wave shader activated on all walls!";
+        },
+        onDeny: () => "Wise choice. Your head will thank you later.",
       },
     };
   }

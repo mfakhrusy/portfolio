@@ -1,6 +1,7 @@
 import { createSignal, onMount, For, createEffect } from "solid-js";
 import { parseLabCommand } from "../../Robot/commands/labCommands";
-import type { LabActions } from "../../Robot/types";
+import type { LabActions, PendingConfirmation } from "../../Robot/types";
+import { isConfirmation, isDenial } from "../../Robot/types";
 import { useRobot } from "../../Robot/RobotContext";
 import { DraggableTerminal } from "./DraggableTerminal";
 import "./LabTerminal.css";
@@ -21,6 +22,8 @@ export function LabTerminal(props: LabTerminalProps) {
   const [inputValue, setInputValue] = createSignal("");
   const [isTyping, setIsTyping] = createSignal(false);
   const [isMinimized, setIsMinimized] = createSignal(false);
+  const [pendingConfirmation, setPendingConfirmation] =
+    createSignal<PendingConfirmation | null>(null);
 
   let messagesEndRef: HTMLDivElement | undefined;
   let inputRef: HTMLInputElement | undefined;
@@ -84,12 +87,40 @@ export function LabTerminal(props: LabTerminalProps) {
 
     await delay(300);
 
+    // Check if we have a pending confirmation
+    const pending = pendingConfirmation();
+    if (pending) {
+      if (isConfirmation(text)) {
+        setPendingConfirmation(null);
+        const response = await pending.onConfirm();
+        await typeRobotMessage(response);
+        inputRef?.focus();
+        return;
+      } else if (isDenial(text)) {
+        setPendingConfirmation(null);
+        const response = pending.onDeny();
+        await typeRobotMessage(response);
+        inputRef?.focus();
+        return;
+      } else {
+        // Not a yes/no response, remind them
+        await typeRobotMessage("Please answer yes or no.");
+        inputRef?.focus();
+        return;
+      }
+    }
+
     const result = parseLabCommand(text, props.labActions);
 
     if (result.handled) {
       await typeRobotMessage(result.response);
 
-      if (result.followUp) {
+      // Check if this command needs confirmation
+      if (result.confirmation) {
+        setPendingConfirmation(result.confirmation);
+        await delay(300);
+        await typeRobotMessage(result.confirmation.prompt);
+      } else if (result.followUp) {
         const followUpResponse = await result.followUp();
         await delay(300);
         await typeRobotMessage(followUpResponse);
