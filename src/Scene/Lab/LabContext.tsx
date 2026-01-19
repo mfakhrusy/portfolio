@@ -6,8 +6,7 @@ import {
   type Accessor,
   type Setter,
 } from "solid-js";
-import type { WaveShaderConfig } from "./types";
-import { defaultWaveShaderConfig } from "./WaveShader";
+import { type WaveShaderConfig, defaultWaveShaderConfig } from "./types";
 
 type LabContextValue = {
   helpExpanded: Accessor<boolean>;
