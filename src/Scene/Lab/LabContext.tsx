@@ -1,0 +1,64 @@
+import {
+  createContext,
+  useContext,
+  createSignal,
+  type JSX,
+  type Accessor,
+  type Setter,
+} from "solid-js";
+import type { WaveShaderConfig } from "./types";
+import { defaultWaveShaderConfig } from "./WaveShader";
+
+type LabContextValue = {
+  helpExpanded: Accessor<boolean>;
+  setHelpExpanded: Setter<boolean>;
+  brushColor: Accessor<string>;
+  setBrushColor: Setter<string>;
+  canvasVisible: Accessor<boolean>;
+  setCanvasVisible: Setter<boolean>;
+  shaderMode: Accessor<"none" | "back" | "all">;
+  setShaderMode: Setter<"none" | "back" | "all">;
+  shaderConfig: Accessor<WaveShaderConfig>;
+  setShaderConfig: Setter<WaveShaderConfig>;
+};
+
+const LabContext = createContext<LabContextValue>();
+
+export function LabProvider(props: { children: JSX.Element }) {
+  const [helpExpanded, setHelpExpanded] = createSignal(false);
+  const [brushColor, setBrushColor] = createSignal("#000000");
+  const [canvasVisible, setCanvasVisible] = createSignal(false);
+  const [shaderMode, setShaderMode] = createSignal<"none" | "back" | "all">(
+    "none",
+  );
+  const [shaderConfig, setShaderConfig] = createSignal<WaveShaderConfig>(
+    defaultWaveShaderConfig,
+  );
+
+  return (
+    <LabContext.Provider
+      value={{
+        helpExpanded,
+        setHelpExpanded,
+        brushColor,
+        setBrushColor,
+        canvasVisible,
+        setCanvasVisible,
+        shaderMode,
+        setShaderMode,
+        shaderConfig,
+        setShaderConfig,
+      }}
+    >
+      {props.children}
+    </LabContext.Provider>
+  );
+}
+
+export function useLab() {
+  const context = useContext(LabContext);
+  if (!context) {
+    throw new Error("useLab must be used within LabProvider");
+  }
+  return context;
+}

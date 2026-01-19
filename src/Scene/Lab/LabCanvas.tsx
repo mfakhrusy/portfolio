@@ -1,13 +1,14 @@
 import { onMount, onCleanup, createSignal } from "solid-js";
 import "./LabCanvas.css";
+import { useLab } from "./LabContext";
 import { useTerminalInteraction } from "./TerminalInteractionContext";
 
 type LabCanvasProps = {
   backWallRef: HTMLDivElement | undefined;
-  brushColor: string;
 };
 
 export function LabCanvas(props: LabCanvasProps) {
+  const { brushColor } = useLab();
   const { isInteracting } = useTerminalInteraction();
   let canvasRef: HTMLCanvasElement | undefined;
   let ctx: CanvasRenderingContext2D | null = null;
@@ -92,7 +93,7 @@ export function LabCanvas(props: LabCanvasProps) {
       ctx.beginPath();
       ctx.moveTo(lastX, lastY);
       ctx.lineTo(coords.x, coords.y);
-      ctx.strokeStyle = props.brushColor;
+      ctx.strokeStyle = brushColor();
       ctx.lineWidth = 3;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";

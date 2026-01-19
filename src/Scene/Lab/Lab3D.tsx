@@ -5,10 +5,10 @@ import { RobotProvider } from "../../Robot/RobotContext";
 import type { LabActions, LabPaintColor } from "../../Robot/types";
 import { LabCanvas } from "./LabCanvas";
 import { LabClock } from "./LabClock";
+import { LabProvider, useLab } from "./LabContext";
 import { TerminalInteractionProvider } from "./TerminalInteractionContext";
-import { WaveShader, defaultWaveShaderConfig } from "./WaveShader";
+import { WaveShader } from "./WaveShader";
 import { LabTerminals } from "./LabTerminals";
-import type { WaveShaderConfig } from "./types";
 
 type Lab3DProps = {
   onBack?: () => void;
@@ -57,18 +57,30 @@ const colorPalettes: Record<
 };
 
 export function Lab3D(props: Lab3DProps) {
+  return (
+    <TerminalInteractionProvider>
+      <LabProvider>
+        <RobotProvider>
+          <Lab3DContent onBack={props.onBack} />
+        </RobotProvider>
+      </LabProvider>
+    </TerminalInteractionProvider>
+  );
+}
+
+function Lab3DContent(props: Lab3DProps) {
+  const {
+    helpExpanded,
+    setHelpExpanded,
+    canvasVisible,
+    setCanvasVisible,
+    shaderMode,
+    setShaderMode,
+  } = useLab();
+
   const [isEntering, setIsEntering] = createSignal(true);
   const [paintColor, setPaintColor] = createSignal<LabPaintColor>("blue");
   const [webpageVisible, setWebpageVisible] = createSignal(false);
-  const [helpExpanded, setHelpExpanded] = createSignal(false);
-  const [canvasVisible, setCanvasVisible] = createSignal(false);
-  const [brushColor, setBrushColor] = createSignal("#000000");
-  const [shaderMode, setShaderMode] = createSignal<"none" | "back" | "all">(
-    "none",
-  );
-  const [shaderConfig, setWaveShaderConfig] = createSignal<WaveShaderConfig>(
-    defaultWaveShaderConfig,
-  );
 
   let backWallRef: HTMLDivElement | undefined;
 
@@ -97,101 +109,79 @@ export function Lab3D(props: Lab3DProps) {
   const palette = () => colorPalettes[paintColor()];
 
   onMount(() => {
-    // Remove entering animation after it completes
     setTimeout(() => {
       setIsEntering(false);
     }, 2000);
   });
 
   return (
-    <TerminalInteractionProvider>
-      <RobotProvider>
-        <div
-          class="lab-container"
-          style={{
-            "--lab-primary": palette().primary,
-            "--lab-secondary": palette().secondary,
-            "--lab-dark": palette().dark,
-            "--lab-accent": palette().accent,
-          }}
-        >
-          <div
-            class="lab-room"
-            classList={{ "lab-room-entering": isEntering() }}
-          >
-            {/* Back wall - facing us */}
-            <div ref={backWallRef} class="lab-wall lab-wall-back">
-              <Show when={webpageVisible()}>
-                <iframe
-                  class="lab-back-iframe"
-                  src="https://www.youtube.com/embed/R0NME9W3cR4?autoplay=1&loop=1&playlist=R0NME9W3cR4&start=60&controls=0&modestbranding=1&showinfo=0&rel=0"
-                  title="Rain sounds"
-                  allow="autoplay; fullscreen"
-                />
-              </Show>
-              <Show when={canvasVisible()}>
-                <LabCanvas
-                  backWallRef={backWallRef}
-                  brushColor={brushColor()}
-                />
-              </Show>
-              <Show when={shaderMode() !== "none"}>
-                <WaveShader config={shaderConfig()} />
-              </Show>
-            </div>
-
-            {/* Front wall - where we entered (transparent) */}
-            <div class="lab-wall lab-wall-front" />
-
-            {/* Left wall */}
-            <div class="lab-wall lab-wall-left">
-              <Show when={shaderMode() === "all"}>
-                <WaveShader config={shaderConfig()} />
-              </Show>
-            </div>
-
-            {/* Right wall */}
-            <div class="lab-wall lab-wall-right">
-              <div class="lab-clock-wrapper">
-                <LabClock />
-              </div>
-              <Show when={shaderMode() === "all"}>
-                <WaveShader config={shaderConfig()} />
-              </Show>
-            </div>
-
-            {/* Floor */}
-            <div class="lab-wall lab-wall-floor">
-              <Show when={shaderMode() === "all"}>
-                <WaveShader config={shaderConfig()} />
-              </Show>
-            </div>
-
-            {/* Ceiling */}
-            <div class="lab-wall lab-wall-ceiling">
-              <Show when={shaderMode() === "all"}>
-                <WaveShader config={shaderConfig()} />
-              </Show>
-            </div>
-
-            <RobotLab hidden={canvasVisible() || shaderMode() !== "none"} />
-          </div>
-          <Show when={!isEntering()}>
-            <LabTerminals
-              labActions={labActions}
-              onBack={props.onBack}
-              helpExpanded={helpExpanded()}
-              setHelpExpanded={setHelpExpanded}
-              brushColor={brushColor}
-              setBrushColor={setBrushColor}
-              canvasVisible={canvasVisible}
-              shaderMode={shaderMode}
-              shaderConfig={shaderConfig}
-              setWaveShaderConfig={setWaveShaderConfig}
+    <div
+      class="lab-container"
+      style={{
+        "--lab-primary": palette().primary,
+        "--lab-secondary": palette().secondary,
+        "--lab-dark": palette().dark,
+        "--lab-accent": palette().accent,
+      }}
+    >
+      <div class="lab-room" classList={{ "lab-room-entering": isEntering() }}>
+        {/* Back wall - facing us */}
+        <div ref={backWallRef} class="lab-wall lab-wall-back">
+          <Show when={webpageVisible()}>
+            <iframe
+              class="lab-back-iframe"
+              src="https://www.youtube.com/embed/R0NME9W3cR4?autoplay=1&loop=1&playlist=R0NME9W3cR4&start=60&controls=0&modestbranding=1&showinfo=0&rel=0"
+              title="Rain sounds"
+              allow="autoplay; fullscreen"
             />
           </Show>
+          <Show when={canvasVisible()}>
+            <LabCanvas backWallRef={backWallRef} />
+          </Show>
+          <Show when={shaderMode() !== "none"}>
+            <WaveShader />
+          </Show>
         </div>
-      </RobotProvider>
-    </TerminalInteractionProvider>
+
+        {/* Front wall - where we entered (transparent) */}
+        <div class="lab-wall lab-wall-front" />
+
+        {/* Left wall */}
+        <div class="lab-wall lab-wall-left">
+          <Show when={shaderMode() === "all"}>
+            <WaveShader />
+          </Show>
+        </div>
+
+        {/* Right wall */}
+        <div class="lab-wall lab-wall-right">
+          <div class="lab-clock-wrapper">
+            <LabClock />
+          </div>
+          <Show when={shaderMode() === "all"}>
+            <WaveShader />
+          </Show>
+        </div>
+
+        {/* Floor */}
+        <div class="lab-wall lab-wall-floor">
+          <Show when={shaderMode() === "all"}>
+            <WaveShader />
+          </Show>
+        </div>
+
+        {/* Ceiling */}
+        <div class="lab-wall lab-wall-ceiling">
+          <Show when={shaderMode() === "all"}>
+            <WaveShader />
+          </Show>
+        </div>
+
+        <RobotLab hidden={canvasVisible() || shaderMode() !== "none"} />
+      </div>
+      <Show when={!isEntering()}>
+        <LabTerminals labActions={labActions} onBack={props.onBack} />
+      </Show>
+    </div>
   );
 }

@@ -1,32 +1,28 @@
 import { createSignal, createEffect, For } from "solid-js";
 import { labHelpCommands } from "../../Robot/commands/labCommands";
 import { DraggableTerminal } from "./DraggableTerminal";
+import { useLab } from "./LabContext";
 import "./LabTerminal.css";
 import "./HelpTerminal.css";
 
-type HelpTerminalProps = {
-  expanded?: boolean;
-  onMinimize?: () => void;
-  onExpand?: () => void;
-};
-
-export function HelpTerminal(props: HelpTerminalProps) {
+export function HelpTerminal() {
+  const { helpExpanded, setHelpExpanded } = useLab();
   const [isMinimized, setIsMinimized] = createSignal(true);
 
   createEffect(() => {
-    if (props.expanded) {
+    if (helpExpanded()) {
       setIsMinimized(false);
     }
   });
 
   const handleMinimize = () => {
     setIsMinimized(true);
-    props.onMinimize?.();
+    setHelpExpanded(false);
   };
 
   const handleExpand = () => {
     setIsMinimized(false);
-    props.onExpand?.();
+    setHelpExpanded(true);
   };
 
   return (

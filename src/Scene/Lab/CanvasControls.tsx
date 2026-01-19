@@ -1,19 +1,16 @@
 import { createSignal } from "solid-js";
 import { DraggableTerminal } from "./DraggableTerminal";
 import { ColorPicker } from "./ColorPicker";
+import { useLab } from "./LabContext";
 import "./CanvasControls.css";
 
-type CanvasControlsProps = {
-  brushColor: string;
-  onColorChange: (color: string) => void;
-};
-
-export function CanvasControls(props: CanvasControlsProps) {
-  const [displayColor, setDisplayColor] = createSignal(props.brushColor);
+export function CanvasControls() {
+  const { brushColor, setBrushColor } = useLab();
+  const [displayColor, setDisplayColor] = createSignal(brushColor());
 
   const handleColorChange = (color: string) => {
     setDisplayColor(color);
-    props.onColorChange(color);
+    setBrushColor(color);
   };
 
   return (

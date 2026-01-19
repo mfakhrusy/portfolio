@@ -1,5 +1,6 @@
 import { onMount, onCleanup } from "solid-js";
 import "./WaveShader.css";
+import { useLab } from "./LabContext";
 import type { WaveShaderConfig } from "./types";
 
 const vertexShaderSource = `
@@ -111,10 +112,6 @@ function createProgram(
   return program;
 }
 
-type WaveShaderProps = {
-  config: WaveShaderConfig;
-};
-
 export const defaultWaveShaderConfig: WaveShaderConfig = {
   color: [0.22, 0.74, 0.97],
   intensity: 1.0,
@@ -123,12 +120,11 @@ export const defaultWaveShaderConfig: WaveShaderConfig = {
   frequency: 1.0,
 };
 
-export function WaveShader(props: WaveShaderProps) {
+export function WaveShader() {
+  const { shaderConfig } = useLab();
   let canvasRef: HTMLCanvasElement | undefined;
   let animationId: number;
   let gl: WebGLRenderingContext | null = null;
-
-  const config = () => props.config;
 
   onMount(() => {
     if (!canvasRef) return;
@@ -198,11 +194,11 @@ export function WaveShader(props: WaveShaderProps) {
 
       gl.uniform1f(timeLocation, time);
       gl.uniform2f(resolutionLocation, canvasRef.width, canvasRef.height);
-      gl.uniform3fv(colorLocation, config().color);
-      gl.uniform1f(intensityLocation, config().intensity);
-      gl.uniform1f(speedLocation, config().speed);
-      gl.uniform1f(waveCountLocation, config().waveCount);
-      gl.uniform1f(frequencyLocation, config().frequency);
+      gl.uniform3fv(colorLocation, shaderConfig().color);
+      gl.uniform1f(intensityLocation, shaderConfig().intensity);
+      gl.uniform1f(speedLocation, shaderConfig().speed);
+      gl.uniform1f(waveCountLocation, shaderConfig().waveCount);
+      gl.uniform1f(frequencyLocation, shaderConfig().frequency);
 
       gl.drawArrays(gl.TRIANGLES, 0, 6);
 

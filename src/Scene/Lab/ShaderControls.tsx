@@ -1,25 +1,21 @@
 import { createSignal } from "solid-js";
 import { DraggableTerminal } from "./DraggableTerminal";
 import { ColorPicker, hslToRgbNormalized } from "./ColorPicker";
+import { useLab } from "./LabContext";
 import "./ShaderControls.css";
-import type { WaveShaderConfig } from "./types";
 
-type ShaderControlsProps = {
-  onConfigChange: (config: WaveShaderConfig) => void;
-  initialConfig: WaveShaderConfig;
-};
-
-export function ShaderControls(props: ShaderControlsProps) {
+export function ShaderControls() {
+  const { shaderConfig, setShaderConfig } = useLab();
   const [isMinimized, setIsMinimized] = createSignal(false);
   const [displayColor, setDisplayColor] = createSignal("hsl(200, 80%, 60%)");
-  const [color, setColor] = createSignal(props.initialConfig.color);
-  const [intensity, setIntensity] = createSignal(props.initialConfig.intensity);
-  const [speed, setSpeed] = createSignal(props.initialConfig.speed);
-  const [waveCount, setWaveCount] = createSignal(props.initialConfig.waveCount);
-  const [frequency, setFrequency] = createSignal(props.initialConfig.frequency);
+  const [color, setColor] = createSignal(shaderConfig().color);
+  const [intensity, setIntensity] = createSignal(shaderConfig().intensity);
+  const [speed, setSpeed] = createSignal(shaderConfig().speed);
+  const [waveCount, setWaveCount] = createSignal(shaderConfig().waveCount);
+  const [frequency, setFrequency] = createSignal(shaderConfig().frequency);
 
   const emitConfig = () => {
-    props.onConfigChange({
+    setShaderConfig({
       color: color(),
       intensity: intensity(),
       speed: speed(),
