@@ -1,5 +1,6 @@
 import { Show } from "solid-js";
 import { CanvasControls } from "./CanvasControls";
+import { GuestBook } from "./GuestBook";
 import { HelpTerminal } from "./HelpTerminal";
 import { useLab } from "./LabContext";
 import { LabTerminal } from "./LabTerminal";
@@ -18,6 +19,7 @@ export function LabTerminals(props: Props) {
     <>
       <LabTerminal labActions={props.labActions} handleBack={props.onBack} />
       <HelpTerminal />
+      <GuestBook />
       <Show when={canvasVisible()}>
         <CanvasControls />
       </Show>

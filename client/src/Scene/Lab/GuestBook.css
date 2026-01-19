@@ -1,0 +1,349 @@
+.guest-book-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.guest-book-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.03) 0px,
+    rgba(0, 0, 0, 0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Left panel - Form */
+.guest-book-form-panel {
+  flex: 0 0 45%;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-right: 1px solid rgba(56, 189, 248, 0.15);
+  overflow-y: auto;
+}
+
+.guest-book-form-header {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: rgba(251, 191, 36, 0.7);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+}
+
+.guest-book-field {
+  margin-bottom: 16px;
+}
+
+.guest-book-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: rgba(56, 189, 248, 0.8);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.guest-book-label-icon {
+  color: rgba(74, 222, 128, 0.8);
+}
+
+.guest-book-label-optional {
+  font-weight: 400;
+  font-size: 10px;
+  color: rgba(100, 120, 150, 0.6);
+  text-transform: lowercase;
+  letter-spacing: 0;
+}
+
+.guest-book-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.95);
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.guest-book-input:focus {
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.2),
+    0 0 20px rgba(56, 189, 248, 0.1);
+}
+
+.guest-book-input::placeholder {
+  color: rgba(100, 120, 150, 0.5);
+}
+
+.guest-book-textarea {
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.guest-book-char-count {
+  font-size: 10px;
+  color: rgba(100, 120, 150, 0.6);
+  text-align: right;
+  margin-top: 4px;
+}
+
+.guest-book-char-count-warning {
+  color: rgba(251, 191, 36, 0.8);
+}
+
+.guest-book-char-count-error {
+  color: rgba(248, 113, 113, 0.8);
+}
+
+.guest-book-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  margin-top: auto;
+  background: linear-gradient(
+    180deg,
+    rgba(56, 189, 248, 0.15) 0%,
+    rgba(56, 189, 248, 0.08) 100%
+  );
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 4px;
+  color: rgba(56, 189, 248, 0.95);
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.guest-book-submit:hover:not(:disabled) {
+  background: linear-gradient(
+    180deg,
+    rgba(56, 189, 248, 0.25) 0%,
+    rgba(56, 189, 248, 0.15) 100%
+  );
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+}
+
+.guest-book-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.guest-book-submit-icon {
+  font-size: 14px;
+}
+
+/* Right panel - Guest list */
+.guest-book-list-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.guest-book-list-header {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: rgba(251, 191, 36, 0.7);
+  text-transform: uppercase;
+  padding: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+  flex-shrink: 0;
+}
+
+.guest-book-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.3) transparent;
+}
+
+.guest-book-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.guest-book-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.guest-book-list::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.3);
+  border-radius: 3px;
+}
+
+.guest-book-entry {
+  padding: 12px;
+  margin-bottom: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(56, 189, 248, 0.1);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.guest-book-entry:hover {
+  border-color: rgba(56, 189, 248, 0.25);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.guest-book-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.guest-book-entry-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(74, 222, 128, 0.95);
+}
+
+.guest-book-entry-name::before {
+  content: "@";
+  color: rgba(74, 222, 128, 0.6);
+}
+
+.guest-book-entry-link {
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.guest-book-entry-link:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+}
+
+.guest-book-entry-link::after {
+  content: " ↗";
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.guest-book-entry-time {
+  font-size: 10px;
+  color: rgba(100, 120, 150, 0.6);
+}
+
+.guest-book-entry-message {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+  word-break: break-word;
+}
+
+.guest-book-entry-message::before {
+  content: '"';
+  color: rgba(56, 189, 248, 0.5);
+}
+
+.guest-book-entry-message::after {
+  content: '"';
+  color: rgba(56, 189, 248, 0.5);
+}
+
+/* Empty state */
+.guest-book-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 24px;
+  text-align: center;
+}
+
+.guest-book-empty-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: 0.3;
+}
+
+.guest-book-empty-text {
+  font-size: 12px;
+  color: rgba(100, 120, 150, 0.6);
+}
+
+/* Loading state */
+.guest-book-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(56, 189, 248, 0.6);
+  font-size: 12px;
+}
+
+.guest-book-loading::after {
+  content: "...";
+  animation: loadingDots 1.5s steps(4, end) infinite;
+}
+
+@keyframes loadingDots {
+  0%,
+  20% {
+    content: "";
+  }
+  40% {
+    content: ".";
+  }
+  60% {
+    content: "..";
+  }
+  80%,
+  100% {
+    content: "...";
+  }
+}
+
+/* Status message */
+.guest-book-status {
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  text-align: center;
+}
+
+.guest-book-status-success {
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: rgba(74, 222, 128, 0.9);
+}
+
+.guest-book-status-error {
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: rgba(248, 113, 113, 0.9);
+}

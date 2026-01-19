@@ -19,6 +19,8 @@ export type FabPosition =
   | "top-right"
   | "top-left";
 
+export type FabStackDirection = "horizontal" | "vertical";
+
 export type DraggableTerminalProps = {
   title: string;
   children: JSX.Element;
@@ -31,6 +33,8 @@ export type DraggableTerminalProps = {
   fabIcon?: string;
   fabClass?: string;
   fabPosition?: FabPosition;
+  fabIndex?: number;
+  fabStackDirection?: FabStackDirection;
   terminalClass?: string;
   showMinimizeButton?: boolean;
   resizable?: boolean;
@@ -182,6 +186,30 @@ export function DraggableTerminal(props: DraggableTerminalProps) {
   const showMinimize = props.showMinimizeButton ?? true;
   const resizable = props.resizable ?? true;
 
+  const getFabStyle = () => {
+    const index = props.fabIndex ?? 1;
+    const direction = props.fabStackDirection ?? "horizontal";
+    const position = props.fabPosition ?? "bottom-right";
+
+    if (index <= 1) return {};
+
+    const offset = (index - 1) * 58;
+
+    if (direction === "horizontal") {
+      if (position === "bottom-right" || position === "top-right") {
+        return { right: `${30 + offset}px` };
+      } else {
+        return { left: `${30 + offset}px` };
+      }
+    } else {
+      if (position === "bottom-right" || position === "bottom-left") {
+        return { bottom: `${30 + offset}px` };
+      } else {
+        return { top: `${30 + offset}px` };
+      }
+    }
+  };
+
   return (
     <>
       <Show when={!isMinimized() && initialized()}>
@@ -264,6 +292,7 @@ export function DraggableTerminal(props: DraggableTerminalProps) {
               props.fabPosition === "top-right",
             "draggable-terminal-fab-top-left": props.fabPosition === "top-left",
           }}
+          style={getFabStyle()}
           onClick={() => props.onExpand?.()}
           title={`Open ${props.title}`}
         >
