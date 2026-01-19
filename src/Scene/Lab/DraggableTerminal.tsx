@@ -13,6 +13,12 @@ import { useTerminalInteraction } from "./TerminalInteractionContext";
 type Position = { x: number; y: number };
 type Size = { width: number; height: number };
 
+export type FabPosition =
+  | "bottom-right"
+  | "bottom-left"
+  | "top-right"
+  | "top-left";
+
 export type DraggableTerminalProps = {
   title: string;
   children: JSX.Element;
@@ -24,6 +30,7 @@ export type DraggableTerminalProps = {
   onExpand?: () => void;
   fabIcon?: string;
   fabClass?: string;
+  fabPosition?: FabPosition;
   terminalClass?: string;
   showMinimizeButton?: boolean;
   resizable?: boolean;
@@ -248,6 +255,15 @@ export function DraggableTerminal(props: DraggableTerminalProps) {
       <Show when={isMinimized() && props.onExpand}>
         <button
           class={`draggable-terminal-fab ${props.fabClass ?? ""}`}
+          classList={{
+            "draggable-terminal-fab-bottom-right":
+              !props.fabPosition || props.fabPosition === "bottom-right",
+            "draggable-terminal-fab-bottom-left":
+              props.fabPosition === "bottom-left",
+            "draggable-terminal-fab-top-right":
+              props.fabPosition === "top-right",
+            "draggable-terminal-fab-top-left": props.fabPosition === "top-left",
+          }}
           onClick={() => props.onExpand?.()}
           title={`Open ${props.title}`}
         >
