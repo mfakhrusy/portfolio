@@ -1,6 +1,5 @@
 .draggable-terminal {
   position: fixed;
-  z-index: 1000;
   display: flex;
   flex-direction: column;
   min-width: 300px;

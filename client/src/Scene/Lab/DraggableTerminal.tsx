@@ -6,9 +6,11 @@ import {
   createEffect,
   type JSX,
   type Accessor,
+  createUniqueId,
 } from "solid-js";
 import "./DraggableTerminal.css";
 import { useTerminalInteraction } from "./TerminalInteractionContext";
+import { useTerminalZIndex } from "./TerminalZIndexContext";
 
 type Position = { x: number; y: number };
 type Size = { width: number; height: number };
@@ -42,6 +44,8 @@ export type DraggableTerminalProps = {
 
 export function DraggableTerminal(props: DraggableTerminalProps) {
   const { setInteracting } = useTerminalInteraction();
+  const { getZIndex, bringToFront, register, unregister } = useTerminalZIndex();
+  const terminalId = createUniqueId();
   const minWidth = props.minSize?.width ?? 300;
   const minHeight = props.minSize?.height ?? 150;
 
@@ -72,6 +76,7 @@ export function DraggableTerminal(props: DraggableTerminalProps) {
   });
 
   onMount(() => {
+    register(terminalId);
     if (!props.initialPosition) {
       const width = props.initialSize?.width ?? 400;
       const height = props.initialSize?.height ?? 300;
@@ -83,9 +88,14 @@ export function DraggableTerminal(props: DraggableTerminalProps) {
     setInitialized(true);
   });
 
+  onCleanup(() => {
+    unregister(terminalId);
+  });
+
   const handleDragStart = (e: MouseEvent) => {
     if ((e.target as HTMLElement).closest(".lab-terminal-minimize")) return;
     e.preventDefault();
+    bringToFront(terminalId);
     setIsDragging(true);
     setDragOffset({
       x: e.clientX - position().x,
@@ -161,6 +171,7 @@ export function DraggableTerminal(props: DraggableTerminalProps) {
   const handleResizeStart = (edge: string) => (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    bringToFront(terminalId);
     setIsResizing(true);
     setResizeEdge(edge);
     setInitialRect({
@@ -224,7 +235,9 @@ export function DraggableTerminal(props: DraggableTerminalProps) {
             top: `${position().y}px`,
             width: `${size().width}px`,
             height: `${size().height}px`,
+            "z-index": getZIndex(terminalId),
           }}
+          onMouseDown={() => bringToFront(terminalId)}
         >
           {/* Resize handles */}
           <Show when={resizable}>
@@ -293,7 +306,10 @@ export function DraggableTerminal(props: DraggableTerminalProps) {
             "draggable-terminal-fab-top-left": props.fabPosition === "top-left",
           }}
           style={getFabStyle()}
-          onClick={() => props.onExpand?.()}
+          onClick={() => {
+            bringToFront(terminalId);
+            props.onExpand?.();
+          }}
           title={`Open ${props.title}`}
         >
           <span class="draggable-terminal-fab-icon">

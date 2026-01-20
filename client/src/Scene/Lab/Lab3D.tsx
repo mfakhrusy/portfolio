@@ -8,6 +8,7 @@ import { LabCanvas } from "./LabCanvas";
 import { LabClock } from "./LabClock";
 import { LabProvider, useLab } from "./LabContext";
 import { TerminalInteractionProvider } from "./TerminalInteractionContext";
+import { TerminalZIndexProvider } from "./TerminalZIndexContext";
 import { WaveShader } from "./WaveShader";
 import { LabTerminals } from "./LabTerminals";
 
@@ -60,11 +61,13 @@ const colorPalettes: Record<
 export function Lab3D(props: Lab3DProps) {
   return (
     <TerminalInteractionProvider>
-      <LabProvider>
-        <RobotProvider>
-          <Lab3DContent onBack={props.onBack} />
-        </RobotProvider>
-      </LabProvider>
+      <TerminalZIndexProvider>
+        <LabProvider>
+          <RobotProvider>
+            <Lab3DContent onBack={props.onBack} />
+          </RobotProvider>
+        </LabProvider>
+      </TerminalZIndexProvider>
     </TerminalInteractionProvider>
   );
 }
