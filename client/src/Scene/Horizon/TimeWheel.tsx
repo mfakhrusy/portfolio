@@ -77,7 +77,7 @@ export function TimeWheel(props: TimeWheelProps) {
     });
   });
 
-  const rotation = () => (props.value / 24) * 360 - 90;
+  const rotation = () => (props.value / 24) * 360 - 180;
 
   return (
     <div
