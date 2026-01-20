@@ -76,6 +76,23 @@ export function parseLabCommand(
     return { handled: true, response: "Going to the office..." };
   }
 
+  // Touch grass command - go to horizon
+  if (
+    lower.includes("touch grass") ||
+    lower.includes("go outside") ||
+    lower.includes("go to horizon")
+  ) {
+    return {
+      handled: true,
+      response: "Ah, you need some fresh air? Good idea!",
+      followUp: async () => {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        actions.goToHorizon();
+        return "Enjoy the outdoors!";
+      },
+    };
+  }
+
   // Rain sound command
   if (
     lower.includes("play rain") ||
@@ -230,5 +247,6 @@ export const labHelpCommands = [
   },
   { command: "hide wave shader", description: "Hide the wave shader" },
   { command: "go to office", description: "Return to the office scene" },
+  { command: "touch grass", description: "Go outside to the horizon" },
   { command: "help", description: "Show this help panel" },
 ];

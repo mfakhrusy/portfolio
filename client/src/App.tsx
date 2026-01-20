@@ -97,7 +97,7 @@ const App = () => {
         aria-label="Lab scene"
       >
         <Show when={scene() === "lab"}>
-          <Lab3D onBack={handleLabExit} />
+          <Lab3D onBack={handleLabExit} onHorizon={handleLabExit} />
         </Show>
       </section>
     </main>

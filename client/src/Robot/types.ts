@@ -12,6 +12,7 @@ export type LabActions = {
   setPaintColor: (color: LabPaintColor) => void;
   getPaintColor: () => LabPaintColor;
   goToOffice: () => void;
+  goToHorizon: () => void;
   showWebpage: () => void;
   hideWebpage: () => void;
   isWebpageVisible: () => boolean;

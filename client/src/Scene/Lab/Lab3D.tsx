@@ -14,6 +14,7 @@ import { LabTerminals } from "./LabTerminals";
 
 type Lab3DProps = {
   onBack?: () => void;
+  onHorizon?: () => void;
 };
 
 // Color palettes for each paint color
@@ -64,7 +65,7 @@ export function Lab3D(props: Lab3DProps) {
       <TerminalZIndexProvider>
         <LabProvider>
           <RobotProvider>
-            <Lab3DContent onBack={props.onBack} />
+            <Lab3DContent onBack={props.onBack} onHorizon={props.onHorizon} />
           </RobotProvider>
         </LabProvider>
       </TerminalZIndexProvider>
@@ -92,6 +93,7 @@ function Lab3DContent(props: Lab3DProps) {
     setPaintColor: (color) => setPaintColor(color),
     getPaintColor: () => paintColor(),
     goToOffice: () => props.onBack?.(),
+    goToHorizon: () => props.onHorizon?.(),
     showWebpage: () => setWebpageVisible(true),
     hideWebpage: () => setWebpageVisible(false),
     isWebpageVisible: () => webpageVisible(),
