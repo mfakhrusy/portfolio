@@ -1,0 +1,19 @@
+/* Reposition door for Horizon scene */
+.horizon-door-wrapper {
+  position: absolute;
+  right: 15%;
+  bottom: 21%;
+  z-index: 10;
+}
+
+/* Override door-container positioning for this context */
+.horizon-door-wrapper .door-container {
+  position: relative;
+  right: auto;
+  bottom: auto;
+}
+
+/* Hide cartoon signs for the delicate horizon scene */
+.horizon-door-wrapper .door-signs {
+  display: none;
+}

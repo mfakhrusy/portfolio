@@ -2,13 +2,15 @@ import { createSignal, createEffect, Show, onMount, onCleanup } from "solid-js";
 import "./App.css";
 import { Office } from "./Scene/Office/Office";
 import { Lab3D } from "./Scene/Lab/Lab3D";
+import { Horizon } from "./Scene/Horizon/Horizon";
 
-type Scene = "office" | "lab";
+type Scene = "horizon" | "office" | "lab";
 
 const getSceneFromHash = (): Scene => {
   const hash = window.location.hash.slice(1);
   if (hash === "lab") return "lab";
-  return "office";
+  if (hash === "office") return "office";
+  return "horizon";
 };
 
 const App = () => {
@@ -18,7 +20,7 @@ const App = () => {
   // ---------- Hash Routing ----------
   createEffect(() => {
     const currentScene = scene();
-    const newHash = currentScene === "office" ? "" : currentScene;
+    const newHash = currentScene === "horizon" ? "" : currentScene;
     if (window.location.hash.slice(1) !== newHash) {
       window.history.pushState(
         null,
@@ -47,7 +49,7 @@ const App = () => {
   };
 
   const handleLabExit = () => {
-    setScene("office");
+    setScene("horizon");
   };
 
   return (
@@ -57,12 +59,27 @@ const App = () => {
         <div class="door-transition-overlay" />
       </Show>
 
+      {/* Horizon Scene (Default) */}
+      <section
+        class="scene"
+        classList={{
+          active: scene() === "horizon",
+          "scene-entering": isEnteringDoor() && scene() === "horizon",
+        }}
+        data-scene="horizon"
+        aria-label="Horizon scene"
+      >
+        <Show when={scene() === "horizon"}>
+          <Horizon onEnterDoor={handleDoorEnter} />
+        </Show>
+      </section>
+
       {/* Office Scene */}
       <section
         class="scene"
         classList={{
           active: scene() === "office",
-          "scene-entering": isEnteringDoor(),
+          "scene-entering": isEnteringDoor() && scene() === "office",
         }}
         data-scene="office"
         aria-label="Office scene"
