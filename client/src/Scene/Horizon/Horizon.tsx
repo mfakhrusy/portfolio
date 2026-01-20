@@ -1,4 +1,4 @@
-import { createSignal, createEffect, Show } from "solid-js";
+import { createSignal, createEffect } from "solid-js";
 import "./Horizon.css";
 import { HorizonDoor } from "./HorizonDoor";
 import { GrassShader } from "./GrassShader";
@@ -10,7 +10,7 @@ type HorizonProps = {
 
 function HorizonScene(props: HorizonProps) {
   const [isInteractive, setIsInteractive] = createSignal(false);
-  const { state, isDebug, setTimeOfDay } = useDayNight();
+  const { state, setTimeOfDay } = useDayNight();
 
   createEffect(() => {
     // Scene entrance delay before interactions are enabled
@@ -33,20 +33,17 @@ function HorizonScene(props: HorizonProps) {
         onEnter={props.onEnterDoor}
       />
 
-      {/* Debug Slider */}
-      <Show when={isDebug()}>
-        <div class="debug-slider">
-          <label>Time: {Math.floor(state().timeOfDay)}:00</label>
-          <input
-            type="range"
-            min="0"
-            max="24"
-            step="0.1"
-            value={state().timeOfDay}
-            onInput={(e) => setTimeOfDay(parseFloat(e.currentTarget.value))}
-          />
-        </div>
-      </Show>
+      {/* Time Control Slider */}
+      <div class="time-control">
+        <input
+          type="range"
+          min="0"
+          max="24"
+          step="0.1"
+          value={state().timeOfDay}
+          onInput={(e) => setTimeOfDay(parseFloat(e.currentTarget.value))}
+        />
+      </div>
     </div>
   );
 }

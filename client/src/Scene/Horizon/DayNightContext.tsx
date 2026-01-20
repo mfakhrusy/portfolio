@@ -5,7 +5,6 @@ import {
   createEffect,
   onCleanup,
   type ParentProps,
-  onMount,
   createMemo,
 } from "solid-js";
 
@@ -18,7 +17,6 @@ type DayNightState = {
 
 type DayNightContextValue = {
   state: () => DayNightState;
-  isDebug: () => boolean;
   setTimeOfDay: (time: number) => void;
 };
 
@@ -68,20 +66,9 @@ const PALETTE = {
 
 export function DayNightProvider(props: ParentProps) {
   const [timeOfDay, setTimeOfDay] = createSignal(new Date().getHours());
-  const [isDebug, setIsDebug] = createSignal(false);
 
-  // Check for debug mode on mount
-  onMount(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("debug") === "true") {
-      setIsDebug(true);
-    }
-  });
-
-  // Timer loop for real time (if not debug)
+  // Timer loop for real time (only if not debug/manual)
   createEffect(() => {
-    if (isDebug()) return;
-
     const updateTime = () => {
       const now = new Date();
       setTimeOfDay(now.getHours() + now.getMinutes() / 60);
@@ -192,7 +179,7 @@ export function DayNightProvider(props: ParentProps) {
   });
 
   return (
-    <DayNightContext.Provider value={{ state, isDebug, setTimeOfDay }}>
+    <DayNightContext.Provider value={{ state, setTimeOfDay }}>
       {props.children}
     </DayNightContext.Provider>
   );
