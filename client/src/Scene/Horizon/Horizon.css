@@ -25,7 +25,12 @@
   right: 0;
   bottom: 0;
   height: 30%;
-  background: linear-gradient(180deg, #4a7c3f 0%, #3d6b34 30%, #2d5a28 100%);
+  background: linear-gradient(
+    180deg,
+    var(--ground-1, #4a7c3f) 0%,
+    var(--ground-2, #3d6b34) 30%,
+    var(--ground-3, #2d5a28) 100%
+  );
   /* background: #4a90d9; */
   overflow: hidden;
 }
