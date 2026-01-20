@@ -62,11 +62,13 @@ export function ArcTimeSlider(props: ArcTimeSliderProps) {
   const handleOrbMouseDown = (e: MouseEvent) => {
     e.stopPropagation();
     setIsDragging(true);
+    document.body.classList.add("arc-slider-dragging");
   };
 
   const handleOrbTouchStart = (e: TouchEvent) => {
     e.stopPropagation();
     setIsDragging(true);
+    document.body.classList.add("arc-slider-dragging");
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -76,6 +78,7 @@ export function ArcTimeSlider(props: ArcTimeSliderProps) {
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    document.body.classList.remove("arc-slider-dragging");
   };
 
   const handleTouchMove = (e: TouchEvent) => {

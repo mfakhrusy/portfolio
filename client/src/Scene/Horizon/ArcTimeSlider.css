@@ -25,13 +25,22 @@
   z-index: 51;
   cursor: grab;
   pointer-events: auto;
-  transition: transform 0.1s ease;
+  transition: transform 0.15s ease;
 }
 
-.time-orb:active,
 .time-orb.dragging {
   cursor: grabbing;
   transform: translate(-50%, -50%) scale(1.1);
+  transition: transform 0.15s ease;
+}
+
+/* Apply grabbing cursor globally while dragging */
+body.arc-slider-dragging {
+  cursor: grabbing !important;
+}
+
+body.arc-slider-dragging * {
+  cursor: grabbing !important;
 }
 
 .orb-body {

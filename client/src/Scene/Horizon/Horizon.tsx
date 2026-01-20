@@ -3,7 +3,7 @@ import "./Horizon.css";
 import { HorizonDoor } from "./HorizonDoor";
 import { GrassShader } from "./GrassShader";
 import { DayNightProvider, useDayNight } from "./DayNightContext";
-import { ArcTimeSlider } from "./ArcTimeSlider";
+import { TimeWheel } from "./TimeWheel";
 import milkyWayAvif from "../../assets/milky-way-bg.avif";
 import milkyWayJpg from "../../assets/milky-way-bg.jpg";
 
@@ -42,8 +42,8 @@ function HorizonScene(props: HorizonProps) {
         onEnter={props.onEnterDoor}
       />
 
-      {/* Arc Time Slider */}
-      <ArcTimeSlider value={state().timeOfDay} onChange={setTimeOfDay} />
+      {/* Time Wheel */}
+      <TimeWheel value={state().timeOfDay} onChange={setTimeOfDay} />
     </div>
   );
 }
