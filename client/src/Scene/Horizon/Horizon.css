@@ -5,6 +5,24 @@
   overflow: hidden;
 }
 
+/* Horizon greeting entrance animation */
+.horizon-entering {
+  animation: horizonGreet 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes horizonGreet {
+  0% {
+    opacity: 0;
+    filter: blur(6px) brightness(0.6) saturate(1.3);
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px) brightness(1) saturate(1);
+    transform: scale(1);
+  }
+}
+
 /* ========== Milky Way Night Sky ========== */
 .milky-way-bg {
   position: absolute;

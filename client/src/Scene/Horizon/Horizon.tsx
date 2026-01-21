@@ -13,15 +13,21 @@ type HorizonProps = {
 
 function HorizonScene(props: HorizonProps) {
   const [isInteractive, setIsInteractive] = createSignal(false);
+  const [isEntering, setIsEntering] = createSignal(true);
   const { state, setTimeOfDay } = useDayNight();
 
   createEffect(() => {
     // Scene entrance delay before interactions are enabled
     setTimeout(() => setIsInteractive(true), 2000);
+    setTimeout(() => setIsEntering(false), 1800);
   });
 
   return (
-    <div class="horizon-scene" style={state().skyStyle}>
+    <div
+      class="horizon-scene"
+      classList={{ "horizon-entering": isEntering() }}
+      style={state().skyStyle}
+    >
       {/* Milky Way night sky */}
       <picture class="milky-way-bg">
         <source srcset={milkyWayAvif} type="image/avif" />

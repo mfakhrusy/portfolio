@@ -73,6 +73,16 @@ export function Lab3D(props: Lab3DProps) {
   );
 }
 
+type TouchGrassPhase =
+  | "idle"
+  | "walkForward"
+  | "turnLeft"
+  | "spawnPortal"
+  | "walkThrough"
+  | "done";
+
+const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
 function Lab3DContent(props: Lab3DProps) {
   const {
     helpExpanded,
@@ -87,13 +97,59 @@ function Lab3DContent(props: Lab3DProps) {
   const [paintColor, setPaintColor] = createSignal<LabPaintColor>("blue");
   const [webpageVisible, setWebpageVisible] = createSignal(false);
 
+  const [touchGrassPhase, setTouchGrassPhase] =
+    createSignal<TouchGrassPhase>("idle");
+  const [camZ, setCamZ] = createSignal(0);
+  const [camRotY, setCamRotY] = createSignal(0);
+  const [portalVisible, setPortalVisible] = createSignal(false);
+  const [portalOverlayOn, setPortalOverlayOn] = createSignal(false);
+  const [cinematicLock, setCinematicLock] = createSignal(false);
+
   let backWallRef: HTMLDivElement | undefined;
+
+  const runTouchGrassCinematic = async () => {
+    if (cinematicLock()) return;
+    setCinematicLock(true);
+
+    const reduced = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)",
+    )?.matches;
+    if (reduced) {
+      props.onHorizon?.();
+      setCinematicLock(false);
+      return;
+    }
+
+    setTouchGrassPhase("walkForward");
+    setCamZ(140);
+    await wait(900);
+
+    setTouchGrassPhase("turnLeft");
+    setCamRotY(-90);
+    await wait(900);
+
+    setTouchGrassPhase("spawnPortal");
+    setPortalVisible(true);
+    await wait(700);
+
+    setTouchGrassPhase("walkThrough");
+    setCamZ(520);
+    setPortalOverlayOn(true);
+    await wait(900);
+
+    props.onHorizon?.();
+    await wait(250);
+
+    setTouchGrassPhase("done");
+    setCinematicLock(false);
+  };
 
   const labActions: LabActions = {
     setPaintColor: (color) => setPaintColor(color),
     getPaintColor: () => paintColor(),
     goToOffice: () => props.onBack?.(),
     goToHorizon: () => props.onHorizon?.(),
+    goToHorizonCinematic: runTouchGrassCinematic,
     showWebpage: () => setWebpageVisible(true),
     hideWebpage: () => setWebpageVisible(false),
     isWebpageVisible: () => webpageVisible(),
@@ -120,6 +176,8 @@ function Lab3DContent(props: Lab3DProps) {
     }, 2000);
   });
 
+  const isCinematic = () => touchGrassPhase() !== "idle";
+
   return (
     <div
       class="lab-container"
@@ -130,62 +188,85 @@ function Lab3DContent(props: Lab3DProps) {
         "--lab-accent": palette().accent,
       }}
     >
-      <div class="lab-room" classList={{ "lab-room-entering": isEntering() }}>
-        {/* Back wall - facing us */}
-        <div ref={backWallRef} class="lab-wall lab-wall-back">
-          <Show when={webpageVisible()}>
-            <iframe
-              class="lab-back-iframe"
-              src="https://www.youtube.com/embed/R0NME9W3cR4?autoplay=1&loop=1&playlist=R0NME9W3cR4&start=60&controls=0&modestbranding=1&showinfo=0&rel=0"
-              title="Rain sounds"
-              allow="autoplay; fullscreen"
-            />
-          </Show>
-          <Show when={canvasVisible()}>
-            <LabCanvas backWallRef={backWallRef} />
-          </Show>
-          <Show when={shaderMode() !== "none"}>
-            <WaveShader />
-          </Show>
-        </div>
-
-        {/* Front wall - where we entered (transparent) */}
-        <div class="lab-wall lab-wall-front" />
-
-        {/* Left wall */}
-        <div class="lab-wall lab-wall-left">
-          <Show when={shaderMode() === "all"}>
-            <WaveShader />
-          </Show>
-        </div>
-
-        {/* Right wall */}
-        <div class="lab-wall lab-wall-right">
-          <div class="lab-clock-wrapper">
-            <LabClock />
+      <div
+        class="lab-room-shell"
+        classList={{ "lab-room-entering": isEntering() }}
+      >
+        <div
+          class="lab-room"
+          classList={{
+            "lab-cinematic": isCinematic(),
+          }}
+          style={{
+            "--cam-z": `${camZ()}px`,
+            "--cam-rot-y": `${camRotY()}deg`,
+          }}
+        >
+          {/* Back wall - facing us */}
+          <div ref={backWallRef} class="lab-wall lab-wall-back">
+            <Show when={webpageVisible()}>
+              <iframe
+                class="lab-back-iframe"
+                src="https://www.youtube.com/embed/R0NME9W3cR4?autoplay=1&loop=1&playlist=R0NME9W3cR4&start=60&controls=0&modestbranding=1&showinfo=0&rel=0"
+                title="Rain sounds"
+                allow="autoplay; fullscreen"
+              />
+            </Show>
+            <Show when={canvasVisible()}>
+              <LabCanvas backWallRef={backWallRef} />
+            </Show>
+            <Show when={shaderMode() !== "none"}>
+              <WaveShader />
+            </Show>
           </div>
-          <Show when={shaderMode() === "all"}>
-            <WaveShader />
-          </Show>
-        </div>
 
-        {/* Floor */}
-        <div class="lab-wall lab-wall-floor">
-          <Show when={shaderMode() === "all"}>
-            <WaveShader />
-          </Show>
-        </div>
+          {/* Front wall - where we entered (transparent) */}
+          <div class="lab-wall lab-wall-front" />
 
-        {/* Ceiling */}
-        <div class="lab-wall lab-wall-ceiling">
-          <Show when={shaderMode() === "all"}>
-            <WaveShader />
-          </Show>
-        </div>
+          {/* Left wall with portal */}
+          <div class="lab-wall lab-wall-left">
+            <div
+              class="lab-portal"
+              classList={{ "lab-portal-visible": portalVisible() }}
+            />
+            <Show when={shaderMode() === "all"}>
+              <WaveShader />
+            </Show>
+          </div>
 
-        <RobotLab hidden={canvasVisible() || shaderMode() !== "none"} />
+          {/* Right wall */}
+          <div class="lab-wall lab-wall-right">
+            <div class="lab-clock-wrapper">
+              <LabClock />
+            </div>
+            <Show when={shaderMode() === "all"}>
+              <WaveShader />
+            </Show>
+          </div>
+
+          {/* Floor */}
+          <div class="lab-wall lab-wall-floor">
+            <Show when={shaderMode() === "all"}>
+              <WaveShader />
+            </Show>
+          </div>
+
+          {/* Ceiling */}
+          <div class="lab-wall lab-wall-ceiling">
+            <Show when={shaderMode() === "all"}>
+              <WaveShader />
+            </Show>
+          </div>
+
+          <RobotLab hidden={canvasVisible() || shaderMode() !== "none"} />
+        </div>
       </div>
-      <Show when={!isEntering()}>
+
+      <Show when={portalOverlayOn()}>
+        <div class="portal-transition-overlay" />
+      </Show>
+
+      <Show when={!isEntering() && !isCinematic()}>
         <LabTerminals labActions={labActions} onBack={props.onBack} />
       </Show>
     </div>

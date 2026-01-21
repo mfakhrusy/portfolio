@@ -76,7 +76,7 @@ export function parseLabCommand(
     return { handled: true, response: "Going to the office..." };
   }
 
-  // Touch grass command - go to horizon
+  // Touch grass command - go to horizon with cinematic walk
   if (
     lower.includes("touch grass") ||
     lower.includes("go outside") ||
@@ -84,10 +84,11 @@ export function parseLabCommand(
   ) {
     return {
       handled: true,
-      response: "Ah, you need some fresh air? Good idea!",
+      response:
+        "Ah, you need some fresh air? Good idea! Let me open the portal for you...",
       followUp: async () => {
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        actions.goToHorizon();
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        await actions.goToHorizonCinematic();
         return "Enjoy the outdoors!";
       },
     };

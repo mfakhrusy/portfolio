@@ -18,12 +18,19 @@
   transition: background 0.5s ease;
 }
 
-.lab-room {
+.lab-room-shell {
   position: relative;
   width: 100vw;
   height: 100vh;
   transform-style: preserve-3d;
-  transform: translateZ(0);
+}
+
+.lab-room {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: translateZ(var(--cam-z, 0px)) rotateY(var(--cam-rot-y, 0deg));
+  transition: transform 900ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Entry animation - start zoomed in, pull back to normal view */
@@ -38,6 +45,11 @@
   100% {
     transform: translateZ(0);
   }
+}
+
+/* Disable pointer events during cinematic */
+.lab-cinematic {
+  pointer-events: none;
 }
 
 /* Common wall styles */
@@ -89,6 +101,9 @@
     var(--lab-dark, #0f0f1a) 0%,
     var(--lab-primary, #1a1a2e) 100%
   );
+  transition:
+    width 400ms ease,
+    transform 400ms ease;
 }
 
 /* Right wall */
@@ -104,6 +119,9 @@
     var(--lab-dark, #0f0f1a) 0%,
     var(--lab-primary, #1a1a2e) 100%
   );
+  transition:
+    width 400ms ease,
+    transform 400ms ease;
 }
 
 /* Floor */
@@ -141,6 +159,9 @@
     60px 60px,
     60px 60px,
     100% 100%;
+  transition:
+    height 400ms ease,
+    transform 400ms ease;
 }
 
 /* Ceiling */
@@ -176,6 +197,33 @@
     120px 120px,
     120px 120px,
     100% 100%;
+  transition:
+    height 400ms ease,
+    transform 400ms ease;
+}
+
+/* ========== Cinematic Extended Room ========== */
+/* During cinematic, walls expand to create a longer corridor effect,
+   preventing void from being visible when camera rotates */
+
+.lab-cinematic .lab-wall-left {
+  width: calc(var(--room-depth) * 2);
+  transform: translateZ(var(--room-depth)) rotateY(90deg);
+}
+
+.lab-cinematic .lab-wall-right {
+  width: calc(var(--room-depth) * 2);
+  transform: translateZ(var(--room-depth)) rotateY(-90deg);
+}
+
+.lab-cinematic .lab-wall-floor {
+  height: calc(var(--room-depth) * 2);
+  transform: translateZ(var(--room-depth)) rotateX(90deg);
+}
+
+.lab-cinematic .lab-wall-ceiling {
+  height: calc(var(--room-depth) * 2);
+  transform: translateZ(var(--room-depth)) rotateX(-90deg);
 }
 
 /* Ambient lighting effect on walls */
@@ -245,5 +293,94 @@
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* ========== Grass Portal ========== */
+.lab-portal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(380px, 60vw);
+  height: min(520px, 70vh);
+  transform: translate(-50%, -50%) scale(0.75);
+  opacity: 0;
+  border-radius: 18px;
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      rgba(120, 255, 160, 0.35),
+      transparent 55%
+    ),
+    linear-gradient(135deg, rgba(20, 90, 40, 0.9), rgba(30, 180, 90, 0.55));
+  box-shadow:
+    0 0 24px rgba(74, 222, 128, 0.25),
+    inset 0 0 40px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  filter: saturate(1.2);
+  transition:
+    opacity 600ms ease,
+    transform 600ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    box-shadow 600ms ease;
+  pointer-events: none;
+}
+
+.lab-portal::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 14px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(120, 255, 160, 0.16) 0 8px,
+    rgba(0, 0, 0, 0) 8px 16px
+  );
+  opacity: 0.7;
+  filter: blur(0.2px);
+  animation: portalShimmer 1.2s linear infinite;
+}
+
+@keyframes portalShimmer {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 120px 0;
+  }
+}
+
+.lab-portal-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  box-shadow:
+    0 0 60px rgba(74, 222, 128, 0.45),
+    0 0 140px rgba(74, 222, 128, 0.2),
+    inset 0 0 40px rgba(0, 0, 0, 0.35);
+}
+
+/* ========== Portal Transition Overlay ========== */
+.portal-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 60% at 12% 55%,
+    rgba(120, 255, 160, 0) 0%,
+    rgba(120, 255, 160, 0.15) 18%,
+    rgba(0, 0, 0, 0.55) 45%,
+    rgba(0, 0, 0, 0.95) 72%,
+    #000 100%
+  );
+  animation: portalOverlayFade 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes portalOverlayFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    background: #000;
   }
 }

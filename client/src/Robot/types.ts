@@ -13,6 +13,7 @@ export type LabActions = {
   getPaintColor: () => LabPaintColor;
   goToOffice: () => void;
   goToHorizon: () => void;
+  goToHorizonCinematic: () => Promise<void>;
   showWebpage: () => void;
   hideWebpage: () => void;
   isWebpageVisible: () => boolean;
