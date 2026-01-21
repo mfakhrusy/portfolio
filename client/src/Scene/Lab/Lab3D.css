@@ -296,10 +296,10 @@
   }
 }
 
-/* ========== Horizon Door Portal with 3D Tunnel ========== */
+/* ========== Horizon Portal with 3D Tunnel ========== */
 
 /* Tunnel container - covers the entire left wall */
-.lab-portal-tunnel {
+.lab-horizon-portal-tunnel {
   position: absolute;
   inset: 0;
   opacity: 0;
@@ -307,12 +307,12 @@
   pointer-events: none;
 }
 
-.lab-portal-tunnel-visible {
+.lab-horizon-portal-tunnel-visible {
   opacity: 1;
 }
 
 /* The door at the end of the tunnel */
-.lab-portal {
+.lab-horizon-portal {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -329,7 +329,7 @@
 }
 
 /* Sky portion of portal - top 70% */
-.lab-portal-sky {
+.lab-horizon-portal-sky {
   position: absolute;
   top: 0;
   left: 0;
@@ -339,7 +339,7 @@
 }
 
 /* Grass portion of portal - bottom 30% */
-.lab-portal-grass {
+.lab-horizon-portal-grass {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -350,7 +350,7 @@
 }
 
 /* GrassShader container inside portal */
-.lab-portal-grass .grass-shader-container {
+.lab-horizon-portal-grass .grass-shader-container {
   position: absolute;
   inset: 0;
 }
@@ -506,7 +506,7 @@
 }
 
 /* Corner ambient occlusion - darker where walls meet */
-.lab-portal-tunnel::before {
+.lab-horizon-portal-tunnel::before {
   content: "";
   position: absolute;
   inset: 0;
