@@ -197,3 +197,53 @@ export function useDayNight() {
   }
   return context;
 }
+
+// Export helper to compute sky colors for a given time (for use outside the context)
+export function computeSkyColors(t: number) {
+  let topColor: string, bottomColor: string;
+  let ground1: string, ground2: string, ground3: string;
+  let lightIntensity = 1;
+
+  if (t >= 5 && t < 7) {
+    // DAWN
+    const p = (t - 5) / 2;
+    topColor = interpolateColor(PALETTE.NIGHT_TOP, PALETTE.DAWN_TOP, p);
+    bottomColor = interpolateColor(
+      PALETTE.NIGHT_BOTTOM,
+      PALETTE.DAWN_BOTTOM,
+      p,
+    );
+    ground1 = interpolateColor(PALETTE.GROUND_NIGHT_1, PALETTE.GROUND_DAY_1, p);
+    ground2 = interpolateColor(PALETTE.GROUND_NIGHT_2, PALETTE.GROUND_DAY_2, p);
+    ground3 = interpolateColor(PALETTE.GROUND_NIGHT_3, PALETTE.GROUND_DAY_3, p);
+    lightIntensity = 0.2 + p * 0.3;
+  } else if (t >= 7 && t < 17) {
+    // DAY
+    const p = Math.min(1, Math.max(0, (t - 7) / 2));
+    topColor = interpolateColor(PALETTE.DAWN_TOP, PALETTE.NOON_TOP, p);
+    bottomColor = interpolateColor(PALETTE.DAWN_BOTTOM, PALETTE.NOON_BOTTOM, p);
+    ground1 = `rgb(${PALETTE.GROUND_DAY_1.join(",")})`;
+    ground2 = `rgb(${PALETTE.GROUND_DAY_2.join(",")})`;
+    ground3 = `rgb(${PALETTE.GROUND_DAY_3.join(",")})`;
+    lightIntensity = 0.5 + p * 0.5;
+  } else if (t >= 17 && t < 19) {
+    // DUSK
+    const p = (t - 17) / 2;
+    topColor = interpolateColor(PALETTE.NOON_TOP, PALETTE.DAWN_TOP, p);
+    bottomColor = interpolateColor(PALETTE.NOON_BOTTOM, PALETTE.DAWN_BOTTOM, p);
+    ground1 = interpolateColor(PALETTE.GROUND_DAY_1, PALETTE.GROUND_NIGHT_1, p);
+    ground2 = interpolateColor(PALETTE.GROUND_DAY_2, PALETTE.GROUND_NIGHT_2, p);
+    ground3 = interpolateColor(PALETTE.GROUND_DAY_3, PALETTE.GROUND_NIGHT_3, p);
+    lightIntensity = 1.0 - p * 0.8;
+  } else {
+    // NIGHT
+    topColor = `rgb(${PALETTE.NIGHT_TOP.join(",")})`;
+    bottomColor = `rgb(${PALETTE.NIGHT_BOTTOM.join(",")})`;
+    ground1 = `rgb(${PALETTE.GROUND_NIGHT_1.join(",")})`;
+    ground2 = `rgb(${PALETTE.GROUND_NIGHT_2.join(",")})`;
+    ground3 = `rgb(${PALETTE.GROUND_NIGHT_3.join(",")})`;
+    lightIntensity = 0.2;
+  }
+
+  return { topColor, bottomColor, ground1, ground2, ground3, lightIntensity };
+}

@@ -1,4 +1,4 @@
-import { createSignal, onMount, Show } from "solid-js";
+import { createSignal, createMemo, onMount, Show } from "solid-js";
 import "./LabTheme.css";
 import "./Lab3D.css";
 import { RobotLab } from "../../Robot/RobotLab";
@@ -11,6 +11,8 @@ import { TerminalInteractionProvider } from "./TerminalInteractionContext";
 import { TerminalZIndexProvider } from "./TerminalZIndexContext";
 import { WaveShader } from "./WaveShader";
 import { LabTerminals } from "./LabTerminals";
+import { GrassShader } from "../Horizon/GrassShader";
+import { computeSkyColors } from "../Horizon/DayNightContext";
 
 type Lab3DProps = {
   onBack?: () => void;
@@ -104,6 +106,13 @@ function Lab3DContent(props: Lab3DProps) {
   const [portalVisible, setPortalVisible] = createSignal(false);
   const [portalOverlayOn, setPortalOverlayOn] = createSignal(false);
   const [cinematicLock, setCinematicLock] = createSignal(false);
+
+  // Compute sky colors based on current time for portal preview
+  const portalSkyColors = createMemo(() => {
+    const now = new Date();
+    const timeOfDay = now.getHours() + now.getMinutes() / 60;
+    return computeSkyColors(timeOfDay);
+  });
 
   let backWallRef: HTMLDivElement | undefined;
 
@@ -246,7 +255,26 @@ function Lab3DContent(props: Lab3DProps) {
               <div class="tunnel-wall tunnel-bottom" />
               <div class="tunnel-wall tunnel-left" />
               <div class="tunnel-wall tunnel-right" />
-              <div class="lab-portal" />
+              <div class="lab-portal">
+                <div
+                  class="lab-portal-sky"
+                  style={{
+                    background: `linear-gradient(180deg, ${portalSkyColors().topColor} 0%, ${portalSkyColors().bottomColor} 100%)`,
+                  }}
+                />
+                <div
+                  class="lab-portal-grass"
+                  style={{
+                    background: `linear-gradient(180deg, ${portalSkyColors().ground1} 0%, ${portalSkyColors().ground2} 50%, ${portalSkyColors().ground3} 100%)`,
+                  }}
+                >
+                  <Show when={portalVisible()}>
+                    <GrassShader
+                      lightIntensity={portalSkyColors().lightIntensity}
+                    />
+                  </Show>
+                </div>
+              </div>
             </div>
             <Show when={shaderMode() === "all"}>
               <WaveShader />
