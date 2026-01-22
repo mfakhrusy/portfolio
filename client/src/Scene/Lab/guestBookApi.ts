@@ -3,6 +3,7 @@ export type GuestEntry = {
   name: string;
   message: string;
   website?: string;
+  status: "approved" | "pending_review" | "rejected";
   createdAt: string;
 };
 
@@ -12,63 +13,32 @@ export type CreateGuestEntryRequest = {
   website?: string;
 };
 
-export const API_BASE_URL = "/api/guestbook";
-
-const MOCK_ENTRIES: GuestEntry[] = [
-  {
-    id: "1",
-    name: "Alice",
-    message: "Love the 3D effects! The terminal UI is so cool.",
-    website: "https://alice.dev",
-    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: "2",
-    name: "Bob",
-    message: "Great portfolio, very creative approach!",
-    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: "3",
-    name: "Charlie",
-    message: "The sci-fi aesthetic is on point.",
-    website: "https://charlie.io",
-    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-];
+// In production, this should be an environment variable.
+// For now, we default to localhost:3000.
+export const API_BASE_URL = "http://localhost:3000/api/guestbook";
 
 export async function fetchGuestEntries(): Promise<GuestEntry[]> {
-  // TODO: Replace with actual API call
-  // const response = await fetch(API_BASE_URL);
-  // if (!response.ok) throw new Error("Failed to fetch guest entries");
-  // return response.json();
-
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return [...MOCK_ENTRIES];
+  try {
+    const response = await fetch(API_BASE_URL);
+    if (!response.ok) throw new Error("Failed to fetch guest entries");
+    return response.json();
+  } catch (error) {
+    console.warn("API unavailable, falling back to empty list", error);
+    return [];
+  }
 }
 
 export async function createGuestEntry(
   request: CreateGuestEntryRequest,
 ): Promise<GuestEntry> {
-  // TODO: Replace with actual API call
-  // const response = await fetch(API_BASE_URL, {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify(request),
-  // });
-  // if (!response.ok) throw new Error("Failed to create guest entry");
-  // return response.json();
-
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  const newEntry: GuestEntry = {
-    id: Date.now().toString(),
-    name: request.name,
-    message: request.message,
-    website: request.website,
-    createdAt: new Date().toISOString(),
-  };
-  MOCK_ENTRIES.unshift(newEntry);
-  return newEntry;
+  const response = await fetch(API_BASE_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  });
+  
+  if (!response.ok) throw new Error("Failed to create guest entry");
+  return response.json();
 }
 
 export function formatRelativeTime(dateString: string): string {
