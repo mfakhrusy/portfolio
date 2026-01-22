@@ -4,7 +4,7 @@ import { useLab } from "./LabContext";
 import "./MobileCanvasControls.css";
 
 export function MobileCanvasControls() {
-  const { brushColor, setBrushColor } = useLab();
+  const { brushColor, setBrushColor, triggerClearCanvas } = useLab();
   const [displayColor, setDisplayColor] = createSignal(brushColor());
   const [isMinimized, setIsMinimized] = createSignal(false);
 
@@ -19,7 +19,7 @@ export function MobileCanvasControls() {
       classList={{ "mobile-canvas-controls-minimized": isMinimized() }}
     >
       <div class="mobile-canvas-controls-header">
-        <span class="mobile-canvas-controls-title">BRUSH</span>
+        <span class="mobile-canvas-controls-title">CANVAS</span>
         <button
           class="mobile-canvas-controls-toggle"
           onClick={() => setIsMinimized(!isMinimized())}
@@ -37,6 +37,9 @@ export function MobileCanvasControls() {
             currentColor={displayColor()}
             onColorChange={handleColorChange}
           />
+          <button class="canvas-clear-button" onClick={triggerClearCanvas}>
+            Clear Canvas
+          </button>
         </div>
       )}
     </div>

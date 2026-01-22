@@ -1,4 +1,4 @@
-import { onMount, onCleanup, createSignal } from "solid-js";
+import { onMount, onCleanup, createSignal, createEffect } from "solid-js";
 import "./LabCanvas.css";
 import { useLab } from "./LabContext";
 import { useTerminalInteraction } from "./TerminalInteractionContext";
@@ -8,7 +8,7 @@ type LabCanvasProps = {
 };
 
 export function LabCanvas(props: LabCanvasProps) {
-  const { brushColor } = useLab();
+  const { brushColor, clearCanvasTrigger } = useLab();
   const { isInteracting } = useTerminalInteraction();
   let canvasRef: HTMLCanvasElement | undefined;
   let ctx: CanvasRenderingContext2D | null = null;
@@ -16,6 +16,28 @@ export function LabCanvas(props: LabCanvasProps) {
   let lastX = 0;
   let lastY = 0;
   const [isAbleToDraw, setIsAbleToDraw] = createSignal(false);
+
+  const clearCanvas = () => {
+    if (ctx && canvasRef) {
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvasRef.width, canvasRef.height);
+    }
+  };
+
+  /**
+   * Clear canvas via context trigger pattern.
+   *
+   * clearCanvas() depends on `ctx` and `canvasRef` which are local to this component,
+   * but the clear button lives in CanvasControls/MobileCanvasControls (sibling components).
+   * Since we can't pass refs directly between siblings, we use a numeric signal in context
+   * as a simple event trigger - incrementing it signals "clear now" to this effect.
+   */
+  createEffect(() => {
+    const trigger = clearCanvasTrigger();
+    if (trigger > 0) {
+      clearCanvas();
+    }
+  });
 
   /**
    *

@@ -5,7 +5,7 @@ import { useLab } from "./LabContext";
 import "./CanvasControls.css";
 
 export function CanvasControls() {
-  const { brushColor, setBrushColor } = useLab();
+  const { brushColor, setBrushColor, triggerClearCanvas } = useLab();
   const [displayColor, setDisplayColor] = createSignal(brushColor());
 
   const handleColorChange = (color: string) => {
@@ -15,9 +15,9 @@ export function CanvasControls() {
 
   return (
     <DraggableTerminal
-      title="BRUSH"
+      title="CANVAS"
       initialPosition={{ x: 30, y: 30 }}
-      initialSize={{ width: 220, height: 280 }}
+      initialSize={{ width: 220, height: 330 }}
       terminalClass="canvas-controls"
       showMinimizeButton={false}
       resizable={false}
@@ -27,6 +27,9 @@ export function CanvasControls() {
           currentColor={displayColor()}
           onColorChange={handleColorChange}
         />
+        <button class="canvas-clear-button" onClick={triggerClearCanvas}>
+          Clear Canvas
+        </button>
       </div>
     </DraggableTerminal>
   );

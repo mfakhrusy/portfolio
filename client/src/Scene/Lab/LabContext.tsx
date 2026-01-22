@@ -19,6 +19,8 @@ type LabContextValue = {
   setShaderMode: Setter<"none" | "back" | "all">;
   shaderConfig: Accessor<WaveShaderConfig>;
   setShaderConfig: Setter<WaveShaderConfig>;
+  clearCanvasTrigger: Accessor<number>;
+  triggerClearCanvas: () => void;
 };
 
 const LabContext = createContext<LabContextValue>();
@@ -33,6 +35,11 @@ export function LabProvider(props: { children: JSX.Element }) {
   const [shaderConfig, setShaderConfig] = createSignal<WaveShaderConfig>(
     defaultWaveShaderConfig,
   );
+  const [clearCanvasTrigger, setClearCanvasTrigger] = createSignal(0);
+
+  const triggerClearCanvas = () => {
+    setClearCanvasTrigger((prev) => prev + 1);
+  };
 
   return (
     <LabContext.Provider
@@ -47,6 +54,8 @@ export function LabProvider(props: { children: JSX.Element }) {
         setShaderMode,
         shaderConfig,
         setShaderConfig,
+        clearCanvasTrigger,
+        triggerClearCanvas,
       }}
     >
       {props.children}

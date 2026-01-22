@@ -3,7 +3,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 45%;
+  height: auto;
+  max-height: 45%;
   display: flex;
   flex-direction: column;
   z-index: 101; /* Above MobileLabTerminal (100) */
@@ -20,7 +21,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
   font-family: var(--lab-font-mono);
-  transition: height 0.2s ease;
+  transition: max-height 0.2s ease;
 }
 
 /* Minimized state - just the header bar */
@@ -76,13 +77,20 @@
 }
 
 .mobile-canvas-controls-body {
-  padding: 12px;
-  flex: 1;
+  padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 16px;
+}
+
+.mobile-canvas-controls-body .color-picker {
+  width: 100%;
+}
+
+.mobile-canvas-controls-body .canvas-clear-button {
+  margin-top: 4px;
 }
 
 /* Minimized header styling - add bottom border */
