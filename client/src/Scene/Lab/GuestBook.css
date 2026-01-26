@@ -537,3 +537,18 @@
   gap: 8px;
   margin-top: auto;
 }
+
+.guest-book-entry-source {
+  font-size: 10px;
+  color: var(--lab-muted-60);
+  margin-top: 6px;
+}
+
+.guest-book-entry-source a {
+  color: var(--lab-accent-70);
+  text-decoration: none;
+}
+
+.guest-book-entry-source a:hover {
+  text-decoration: underline;
+}

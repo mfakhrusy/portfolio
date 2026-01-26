@@ -9,7 +9,8 @@ import {
   getOwnedEntryId,
   setOwnedEntryId,
   clearOwnedEntryId,
-  getSourceUrl,
+  getSourceName,
+  sourceToUrl,
   type GuestEntry,
 } from "./guestBookApi";
 import "./MobileGuestBook.css";
@@ -103,7 +104,7 @@ export function MobileGuestBook() {
         name: trimmedName,
         message: trimmedMessage,
         website: trimmedWebsite || undefined,
-        source: getSourceUrl() || undefined,
+        source: getSourceName(),
       });
 
       if (newEntry.status === "pending_review") {
@@ -550,6 +551,18 @@ export function MobileGuestBook() {
                         <div class="mobile-guest-book-entry-message">
                           {entry.message}
                         </div>
+                        <Show when={entry.source}>
+                          <div class="mobile-guest-book-entry-source">
+                            from{" "}
+                            <a
+                              href={sourceToUrl(entry.source!)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {entry.source}
+                            </a>
+                          </div>
+                        </Show>
                       </div>
                     )}
                   </For>

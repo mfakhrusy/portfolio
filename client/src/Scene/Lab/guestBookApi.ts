@@ -3,6 +3,7 @@ export type GuestEntry = {
   name: string;
   message: string;
   website?: string;
+  source?: string;
   status: "approved" | "pending_review" | "rejected";
   createdAt: string;
 };
@@ -18,8 +19,23 @@ const isDev = ["localhost", "127.0.0.1", "0.0.0.0"].includes(
   window.location.hostname,
 );
 
-export function getSourceUrl(): string | null {
-  if (typeof window === "undefined") return null;
+export function getSourceName(): string {
+  if (typeof window === "undefined") return "3d-lab";
+  const host = window.location.hostname;
+
+  if (isDev) {
+    return "3d-lab";
+  }
+
+  const parts = host.split(".");
+  if (parts.length >= 3) {
+    return parts.slice(0, -2).join(".");
+  }
+  return "3d-lab";
+}
+
+export function sourceToUrl(source: string): string {
+  if (typeof window === "undefined") return `https://${source}.fahru.me`;
   const host = window.location.hostname;
 
   if (isDev) {
@@ -29,12 +45,9 @@ export function getSourceUrl(): string | null {
   const parts = host.split(".");
   if (parts.length >= 2) {
     const baseDomain = parts.slice(-2).join(".");
-    const subdomain = parts.slice(0, -2).join(".");
-    if (subdomain) {
-      return `https://${subdomain}.${baseDomain}`;
-    }
+    return `https://${source}.${baseDomain}`;
   }
-  return `https://${host}`;
+  return `https://${source}.fahru.me`;
 }
 export function isGuestBookEnabled(): boolean {
   if (typeof window === "undefined") return false;
