@@ -59,7 +59,9 @@ export function MobileShaderControls() {
           </div>
 
           <div class="mobile-shader-controls-section">
-            <div class="mobile-shader-controls-section-title">Wave Settings</div>
+            <div class="mobile-shader-controls-section-title">
+              Wave Settings
+            </div>
 
             <label class="mobile-shader-controls-slider-label">
               <span>Waves</span>
@@ -80,7 +82,9 @@ export function MobileShaderControls() {
 
             <label class="mobile-shader-controls-slider-label">
               <span>Speed</span>
-              <span class="mobile-shader-controls-value">{speed().toFixed(1)}</span>
+              <span class="mobile-shader-controls-value">
+                {speed().toFixed(1)}
+              </span>
               <input
                 type="range"
                 class="mobile-shader-controls-slider"
@@ -97,7 +101,9 @@ export function MobileShaderControls() {
 
             <label class="mobile-shader-controls-slider-label">
               <span>Intensity</span>
-              <span class="mobile-shader-controls-value">{intensity().toFixed(1)}</span>
+              <span class="mobile-shader-controls-value">
+                {intensity().toFixed(1)}
+              </span>
               <input
                 type="range"
                 class="mobile-shader-controls-slider"
@@ -114,7 +120,9 @@ export function MobileShaderControls() {
 
             <label class="mobile-shader-controls-slider-label">
               <span>Frequency</span>
-              <span class="mobile-shader-controls-value">{frequency().toFixed(1)}</span>
+              <span class="mobile-shader-controls-value">
+                {frequency().toFixed(1)}
+              </span>
               <input
                 type="range"
                 class="mobile-shader-controls-slider"

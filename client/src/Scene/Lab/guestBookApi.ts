@@ -18,6 +18,9 @@ const isDev = ["localhost", "127.0.0.1", "0.0.0.0"].includes(
 );
 export function isGuestBookEnabled(): boolean {
   if (typeof window === "undefined") return false;
+  if (isDev) {
+    return true;
+  }
   const host = window.location.hostname;
   return (
     host.endsWith(".fahru.me") ||
@@ -53,6 +56,47 @@ export async function createGuestEntry(
 
   if (!response.ok) throw new Error("Failed to create guest entry");
   return response.json();
+}
+
+export type UpdateGuestEntryRequest = {
+  message: string;
+  website?: string;
+};
+
+export async function updateGuestEntry(
+  id: string,
+  request: UpdateGuestEntryRequest,
+): Promise<GuestEntry> {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) throw new Error("Failed to update guest entry");
+  return response.json();
+}
+
+export async function deleteGuestEntry(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) throw new Error("Failed to delete guest entry");
+}
+
+const OWNED_ENTRY_KEY = "ownedGuestEntryId";
+
+export function getOwnedEntryId(): string | null {
+  return localStorage.getItem(OWNED_ENTRY_KEY);
+}
+
+export function setOwnedEntryId(id: string): void {
+  localStorage.setItem(OWNED_ENTRY_KEY, id);
+}
+
+export function clearOwnedEntryId(): void {
+  localStorage.removeItem(OWNED_ENTRY_KEY);
 }
 
 export function formatRelativeTime(dateString: string): string {

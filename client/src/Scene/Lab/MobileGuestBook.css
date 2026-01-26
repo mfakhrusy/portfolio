@@ -403,3 +403,177 @@
 .mobile-guest-book-minimized .mobile-guest-book-header {
   border-bottom: none;
 }
+
+.mobile-guest-book-entry-owned {
+  border-color: var(--lab-accent-30);
+  background: var(--lab-accent-05);
+}
+
+.mobile-guest-book-entry-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mobile-guest-book-entry-yours {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--lab-accent-80);
+  letter-spacing: 1px;
+}
+
+.mobile-guest-book-entry-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.mobile-guest-book-action-btn {
+  padding: 6px 12px;
+  font-family: var(--lab-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid;
+}
+
+.mobile-guest-book-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mobile-guest-book-edit-btn {
+  background: var(--lab-accent-10);
+  border-color: var(--lab-accent-30);
+  color: var(--lab-accent-90);
+}
+
+.mobile-guest-book-edit-btn:active:not(:disabled) {
+  background: var(--lab-accent-20);
+}
+
+.mobile-guest-book-delete-btn {
+  background: var(--lab-error-10);
+  border-color: var(--lab-error-30);
+  color: var(--lab-error-90);
+}
+
+.mobile-guest-book-delete-btn:active:not(:disabled) {
+  background: var(--lab-error-20);
+}
+
+.mobile-guest-book-save-btn {
+  background: var(--lab-success-10);
+  border-color: var(--lab-success-30);
+  color: var(--lab-success-90);
+}
+
+.mobile-guest-book-save-btn:active:not(:disabled) {
+  background: var(--lab-success-20);
+}
+
+.mobile-guest-book-cancel-btn {
+  background: var(--lab-accent-10);
+  border-color: var(--lab-accent-30);
+  color: var(--lab-accent-90);
+}
+
+.mobile-guest-book-cancel-btn:active:not(:disabled) {
+  background: var(--lab-accent-20);
+}
+
+.mobile-guest-book-edit-form {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--lab-accent-20);
+}
+
+.mobile-guest-book-edit-form .mobile-guest-book-field {
+  margin-bottom: 10px;
+}
+
+.mobile-guest-book-edit-form .mobile-guest-book-textarea {
+  min-height: 50px;
+}
+
+.mobile-guest-book-edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.mobile-guest-book-owned-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-guest-book-owned-status {
+  margin-bottom: 12px;
+}
+
+.mobile-guest-book-status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 4px;
+}
+
+.mobile-guest-book-status-approved {
+  background: var(--lab-success-10);
+  border: 1px solid var(--lab-success-30);
+  color: var(--lab-success-90);
+}
+
+.mobile-guest-book-status-pending {
+  background: var(--lab-warning-10);
+  border: 1px solid var(--lab-warning-30);
+  color: var(--lab-warning-90);
+}
+
+.mobile-guest-book-owned-content {
+  flex: 1;
+}
+
+.mobile-guest-book-owned-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lab-success-95);
+  margin-bottom: 6px;
+}
+
+.mobile-guest-book-owned-message {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--lab-text-secondary);
+  margin-bottom: 10px;
+  padding: 8px;
+  background: var(--lab-terminal-input-bg);
+  border: 1px solid var(--lab-accent-10);
+  border-radius: 4px;
+}
+
+.mobile-guest-book-owned-website {
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.mobile-guest-book-owned-website a {
+  color: var(--lab-accent-70);
+  text-decoration: none;
+}
+
+.mobile-guest-book-owned-time {
+  font-size: 10px;
+  color: var(--lab-muted-60);
+  margin-bottom: 12px;
+}
+
+.mobile-guest-book-owned-actions {
+  display: flex;
+  gap: 8px;
+}

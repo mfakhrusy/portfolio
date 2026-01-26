@@ -319,14 +319,21 @@ function Lab3DContent(props: Lab3DProps) {
 
       {/* Mobile shader controls - rendered outside lab-container */}
       <Show
-        when={isMobile() && shaderMode() !== "none" && !isEntering() && !isCinematic()}
+        when={
+          isMobile() &&
+          shaderMode() !== "none" &&
+          !isEntering() &&
+          !isCinematic()
+        }
       >
         <MobileShaderControls />
       </Show>
 
       {/* Mobile guest book - rendered outside lab-container */}
       <Show
-        when={isMobile() && guestBookVisible() && !isEntering() && !isCinematic()}
+        when={
+          isMobile() && guestBookVisible() && !isEntering() && !isCinematic()
+        }
       >
         <MobileGuestBook />
       </Show>

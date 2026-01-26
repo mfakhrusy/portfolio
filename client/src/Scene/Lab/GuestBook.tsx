@@ -3,8 +3,13 @@ import { DraggableTerminal } from "./DraggableTerminal";
 import {
   fetchGuestEntries,
   createGuestEntry,
+  updateGuestEntry,
+  deleteGuestEntry,
   formatRelativeTime,
   isGuestBookEnabled,
+  getOwnedEntryId,
+  setOwnedEntryId,
+  clearOwnedEntryId,
   type GuestEntry,
 } from "./guestBookApi";
 import "./GuestBook.css";
@@ -26,6 +31,13 @@ export function GuestBook() {
     type: "success" | "error";
     text: string;
   } | null>(null);
+
+  const [editingId, setEditingId] = createSignal<string | null>(null);
+  const [editMessage, setEditMessage] = createSignal("");
+  const [editWebsite, setEditWebsite] = createSignal("");
+  const [ownedEntryId, setOwnedEntryIdState] = createSignal<string | null>(
+    null,
+  );
 
   const loadEntries = async () => {
     setIsLoading(true);
@@ -77,6 +89,7 @@ export function GuestBook() {
 
   onMount(() => {
     loadEntries();
+    setOwnedEntryIdState(getOwnedEntryId());
   });
 
   const handleSubmit = async (e: Event) => {
@@ -130,10 +143,95 @@ export function GuestBook() {
       setName("");
       setMessage("");
       setWebsite("");
+      setOwnedEntryId(newEntry.id);
+      setOwnedEntryIdState(newEntry.id);
 
       setTimeout(() => setStatus(null), 3000);
     } catch {
       setStatus({ type: "error", text: "ERROR: Failed to submit" });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleEdit = (entry: GuestEntry) => {
+    setEditingId(entry.id);
+    setEditMessage(entry.message);
+    setEditWebsite(entry.website || "");
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditMessage("");
+    setEditWebsite("");
+  };
+
+  const handleSaveEdit = async () => {
+    const id = editingId();
+    if (!id) return;
+
+    const trimmedMessage = editMessage().trim();
+    if (!trimmedMessage) {
+      setStatus({ type: "error", text: "ERROR: Message required" });
+      return;
+    }
+
+    if (trimmedMessage.length > MAX_MESSAGE_LENGTH) {
+      setStatus({ type: "error", text: "ERROR: Message too long" });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const updatedEntry = await updateGuestEntry(id, {
+        message: trimmedMessage,
+        website: editWebsite().trim() || undefined,
+      });
+
+      setEntries((prev) => prev.map((e) => (e.id === id ? updatedEntry : e)));
+
+      const storedPending = localStorage.getItem("pendingGuestEntries");
+      if (storedPending) {
+        const localPending: GuestEntry[] = JSON.parse(storedPending);
+        const updated = localPending.map((e) =>
+          e.id === id ? updatedEntry : e,
+        );
+        localStorage.setItem("pendingGuestEntries", JSON.stringify(updated));
+      }
+
+      setEditingId(null);
+      setEditMessage("");
+      setEditWebsite("");
+      setStatus({ type: "success", text: "ENTRY UPDATED" });
+      setTimeout(() => setStatus(null), 3000);
+    } catch {
+      setStatus({ type: "error", text: "ERROR: Failed to update" });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete your entry?")) return;
+
+    setIsSubmitting(true);
+    try {
+      await deleteGuestEntry(id);
+      setEntries((prev) => prev.filter((e) => e.id !== id));
+
+      const storedPending = localStorage.getItem("pendingGuestEntries");
+      if (storedPending) {
+        const localPending: GuestEntry[] = JSON.parse(storedPending);
+        const filtered = localPending.filter((e) => e.id !== id);
+        localStorage.setItem("pendingGuestEntries", JSON.stringify(filtered));
+      }
+
+      clearOwnedEntryId();
+      setOwnedEntryIdState(null);
+      setStatus({ type: "success", text: "ENTRY DELETED" });
+      setTimeout(() => setStatus(null), 3000);
+    } catch {
+      setStatus({ type: "error", text: "ERROR: Failed to delete" });
     } finally {
       setIsSubmitting(false);
     }
@@ -145,6 +243,12 @@ export function GuestBook() {
     if (charCount() > MAX_MESSAGE_LENGTH * 0.9)
       return "guest-book-char-count-warning";
     return "";
+  };
+
+  const ownedEntry = () => {
+    const id = ownedEntryId();
+    if (!id) return null;
+    return entries().find((e) => e.id === id) || null;
   };
 
   return (
@@ -161,10 +265,8 @@ export function GuestBook() {
       fabStackDirection="horizontal"
     >
       <div class="guest-book-container">
-        {/* Left panel - Form */}
+        {/* Left panel - Form or User's Entry */}
         <div class="guest-book-form-panel">
-          <div class="guest-book-form-header">// Sign the Guest Book</div>
-
           <Show when={status()}>
             <div
               class={`guest-book-status ${
@@ -177,65 +279,192 @@ export function GuestBook() {
             </div>
           </Show>
 
-          <form onSubmit={handleSubmit}>
-            <div class="guest-book-field">
-              <label class="guest-book-label">
-                <span class="guest-book-label-icon">&gt;</span>
-                Name
-              </label>
-              <input
-                type="text"
-                class="guest-book-input"
-                placeholder="Enter your name..."
-                value={name()}
-                onInput={(e) => setName(e.currentTarget.value)}
-                disabled={isSubmitting()}
-                maxLength={50}
-              />
-            </div>
+          <Show
+            when={ownedEntry()}
+            fallback={
+              <>
+                <div class="guest-book-form-header">// Sign the Guest Book</div>
+                <form onSubmit={handleSubmit}>
+                  <div class="guest-book-field">
+                    <label class="guest-book-label">
+                      <span class="guest-book-label-icon">&gt;</span>
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      class="guest-book-input"
+                      placeholder="Enter your name..."
+                      value={name()}
+                      onInput={(e) => setName(e.currentTarget.value)}
+                      disabled={isSubmitting()}
+                      maxLength={50}
+                    />
+                  </div>
 
-            <div class="guest-book-field">
-              <label class="guest-book-label">
-                <span class="guest-book-label-icon">&gt;</span>
-                Message
-              </label>
-              <textarea
-                class="guest-book-input guest-book-textarea"
-                placeholder="Leave a message..."
-                value={message()}
-                onInput={(e) => setMessage(e.currentTarget.value)}
-                disabled={isSubmitting()}
-              />
-              <div class={`guest-book-char-count ${charCountClass()}`}>
-                {charCount()}/{MAX_MESSAGE_LENGTH}
+                  <div class="guest-book-field">
+                    <label class="guest-book-label">
+                      <span class="guest-book-label-icon">&gt;</span>
+                      Message
+                    </label>
+                    <textarea
+                      class="guest-book-input guest-book-textarea"
+                      placeholder="Leave a message..."
+                      value={message()}
+                      onInput={(e) => setMessage(e.currentTarget.value)}
+                      disabled={isSubmitting()}
+                    />
+                    <div class={`guest-book-char-count ${charCountClass()}`}>
+                      {charCount()}/{MAX_MESSAGE_LENGTH}
+                    </div>
+                  </div>
+
+                  <div class="guest-book-field">
+                    <label class="guest-book-label">
+                      <span class="guest-book-label-icon">&gt;</span>
+                      Website
+                      <span class="guest-book-label-optional">(optional)</span>
+                    </label>
+                    <input
+                      type="url"
+                      class="guest-book-input"
+                      placeholder="https://yoursite.com"
+                      value={website()}
+                      onInput={(e) => setWebsite(e.currentTarget.value)}
+                      disabled={isSubmitting()}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="guest-book-submit"
+                    disabled={
+                      isSubmitting() || !name().trim() || !message().trim()
+                    }
+                  >
+                    <span class="guest-book-submit-icon">⏎</span>
+                    {isSubmitting() ? "Submitting..." : "Submit Entry"}
+                  </button>
+                </form>
+              </>
+            }
+          >
+            {(entry) => (
+              <div class="guest-book-owned-panel">
+                <div class="guest-book-form-header">// Your Entry</div>
+
+                <div class="guest-book-owned-status">
+                  <Show
+                    when={entry().status === "approved"}
+                    fallback={
+                      <span class="guest-book-status-badge guest-book-status-pending">
+                        ⏳ PENDING REVIEW
+                      </span>
+                    }
+                  >
+                    <span class="guest-book-status-badge guest-book-status-approved">
+                      ✓ APPROVED
+                    </span>
+                  </Show>
+                </div>
+
+                <Show
+                  when={editingId() === entry().id}
+                  fallback={
+                    <div class="guest-book-owned-content">
+                      <div class="guest-book-owned-name">@{entry().name}</div>
+                      <div class="guest-book-owned-message">
+                        "{entry().message}"
+                      </div>
+                      <Show when={entry().website}>
+                        <div class="guest-book-owned-website">
+                          <a
+                            href={entry().website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {entry().website}
+                          </a>
+                        </div>
+                      </Show>
+                      <div class="guest-book-owned-time">
+                        Submitted {formatRelativeTime(entry().createdAt)}
+                      </div>
+
+                      <div class="guest-book-owned-actions">
+                        <button
+                          class="guest-book-action-btn guest-book-edit-btn"
+                          onClick={() => handleEdit(entry())}
+                          disabled={isSubmitting()}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          class="guest-book-action-btn guest-book-delete-btn"
+                          onClick={() => handleDelete(entry().id)}
+                          disabled={isSubmitting()}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  }
+                >
+                  <div class="guest-book-edit-form">
+                    <div class="guest-book-field">
+                      <label class="guest-book-label">
+                        <span class="guest-book-label-icon">&gt;</span>
+                        Message
+                      </label>
+                      <textarea
+                        class="guest-book-input guest-book-textarea"
+                        value={editMessage()}
+                        onInput={(e) => setEditMessage(e.currentTarget.value)}
+                        disabled={isSubmitting()}
+                      />
+                      <div
+                        class={`guest-book-char-count ${editMessage().length > MAX_MESSAGE_LENGTH ? "guest-book-char-count-error" : ""}`}
+                      >
+                        {editMessage().length}/{MAX_MESSAGE_LENGTH}
+                      </div>
+                    </div>
+                    <div class="guest-book-field">
+                      <label class="guest-book-label">
+                        <span class="guest-book-label-icon">&gt;</span>
+                        Website
+                        <span class="guest-book-label-optional">
+                          (optional)
+                        </span>
+                      </label>
+                      <input
+                        type="url"
+                        class="guest-book-input"
+                        placeholder="https://yoursite.com"
+                        value={editWebsite()}
+                        onInput={(e) => setEditWebsite(e.currentTarget.value)}
+                        disabled={isSubmitting()}
+                      />
+                    </div>
+                    <div class="guest-book-edit-actions">
+                      <button
+                        class="guest-book-action-btn guest-book-save-btn"
+                        onClick={handleSaveEdit}
+                        disabled={isSubmitting() || !editMessage().trim()}
+                      >
+                        {isSubmitting() ? "Saving..." : "Save"}
+                      </button>
+                      <button
+                        class="guest-book-action-btn guest-book-cancel-btn"
+                        onClick={handleCancelEdit}
+                        disabled={isSubmitting()}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </Show>
               </div>
-            </div>
-
-            <div class="guest-book-field">
-              <label class="guest-book-label">
-                <span class="guest-book-label-icon">&gt;</span>
-                Website
-                <span class="guest-book-label-optional">(optional)</span>
-              </label>
-              <input
-                type="url"
-                class="guest-book-input"
-                placeholder="https://yoursite.com"
-                value={website()}
-                onInput={(e) => setWebsite(e.currentTarget.value)}
-                disabled={isSubmitting()}
-              />
-            </div>
-
-            <button
-              type="submit"
-              class="guest-book-submit"
-              disabled={isSubmitting() || !name().trim() || !message().trim()}
-            >
-              <span class="guest-book-submit-icon">⏎</span>
-              {isSubmitting() ? "Submitting..." : "Submit Entry"}
-            </button>
-          </form>
+            )}
+          </Show>
         </div>
 
         {/* Right panel - Guest list */}
@@ -261,7 +490,12 @@ export function GuestBook() {
             <Show when={!isLoading() && entries().length > 0}>
               <For each={entries()}>
                 {(entry) => (
-                  <div class="guest-book-entry">
+                  <div
+                    class="guest-book-entry"
+                    classList={{
+                      "guest-book-entry-owned": entry.id === ownedEntryId(),
+                    }}
+                  >
                     <div class="guest-book-entry-header">
                       <Show
                         when={entry.website}
@@ -280,24 +514,16 @@ export function GuestBook() {
                           {entry.name}
                         </a>
                       </Show>
-                      <span class="guest-book-entry-time">
-                        {formatRelativeTime(entry.createdAt)}
-                      </span>
-                    </div>
-                    <div class="guest-book-entry-message">
-                      {entry.message}
-                      <Show when={entry.status === "pending_review"}>
-                        <span
-                          style={{
-                            color: "yellow",
-                            "font-size": "0.8em",
-                            "margin-left": "0.5em",
-                          }}
-                        >
-                          [PENDING REVIEW]
+                      <div class="guest-book-entry-meta">
+                        <span class="guest-book-entry-time">
+                          {formatRelativeTime(entry.createdAt)}
                         </span>
-                      </Show>
+                        <Show when={entry.id === ownedEntryId()}>
+                          <span class="guest-book-entry-yours">[YOU]</span>
+                        </Show>
+                      </div>
                     </div>
+                    <div class="guest-book-entry-message">{entry.message}</div>
                   </div>
                 )}
               </For>
